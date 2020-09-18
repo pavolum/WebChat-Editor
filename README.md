@@ -62,15 +62,15 @@ A small instance of 'customizationOptions' would look something like this (using
   id: 'backgroundColor',
   displayName: 'Background Color',
   category: Categories.WebChatShell, //Create Categories string enum that represents different UI categories
-  uiSelectorType: UISelectors.ColorSelector, //Create UISelectors string enum that represents different available UI selectors 
-  defaultValue: 'blue' //couple this back to styleobjects state value
+  uiSelectorType: UISelectors.ColorSelector, //Create UISelectors string enum that represents different available UI selectors
+  isAdvancedOption: true, 
+  // corresponding Value can be attained using id and call to grab value for that ID from AppState.styleOptions
 },
 {
   id: 'bubbleBorderRadius',
   displayName: 'Bubble Border Radius',
   category: Categories.ChatBubble,
   uiSelectorType: UISelectors.NumberSelector,
-  defaultValue: 2
 }
 ...
 ]

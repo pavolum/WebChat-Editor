@@ -59,6 +59,13 @@ export class WebChatEditor extends React.Component<PropsType> {
     }
 
     render() {
+
+        /* TODO: Pseudocode
+            
+            Loop through state.customizationEntries
+            For each entry
+
+        */
         return (
 
             <div className="ms-Grid" dir="ltr">

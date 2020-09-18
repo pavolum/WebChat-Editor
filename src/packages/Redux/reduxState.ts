@@ -1,6 +1,17 @@
 import { defaultStyleOptions } from "../webchatEditor/constants"
 
+export interface CustomizationEntry {
+    id: string,
+    displayName: string,
+    category: any, // TODO change to category interface
+    isAdvancedEntry: boolean,
+    uiSelectorType: any // TODO create uiSelectorType interface 
+}
+
 export interface IAppState {
+    // Value of UI elements that determine style option value stored here
+    customizationEntries: CustomizationEntry[],
+    // Value of current style options stored here
     styleOptions: WebChatStyleOption;
     jsonIsInvalid: boolean;
 }
@@ -130,6 +141,7 @@ export interface WebChatStyleOption {
 
 
 export const initialAppState: IAppState = {
+    customizationEntries: [], // TODO: populate with real data
     styleOptions: defaultStyleOptions,
     jsonIsInvalid: false
 }
