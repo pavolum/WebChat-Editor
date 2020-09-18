@@ -1,0 +1,47 @@
+import React from "react";
+import { withRouter } from "react-router-dom";
+import { IAppState } from "../../../models/reduxState";
+import { connect } from "react-redux";
+import { actionTypes, genericSingleAction } from "../../shared/actions";
+import { Dispatch, AnyAction } from 'redux';
+
+interface StateProps {
+
+}
+
+interface DispatchProps {
+    setAccentColor: (colorCode: string) => void
+}
+
+interface Props {
+
+}
+
+type PropsType = StateProps & DispatchProps & Props;
+
+export class WebChatEditor extends React.Component<PropsType> {
+    constructor(props: PropsType) {
+        super(props);
+    }
+
+    render() {
+        
+        return (
+        );
+    }
+}
+
+const mapStateToProps = (state: IAppState, ownProps: Props): StateProps => ({
+
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): DispatchProps => ({
+    setAccentColor: (colorCode: string) => {
+        dispatch(genericSingleAction<string>(actionTypes.SET_ACCENT_COLOR, colorCode));
+    }
+});
+
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(WebChatEditor));
