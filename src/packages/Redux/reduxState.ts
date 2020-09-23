@@ -1,14 +1,18 @@
-import { defaultStyleOptions } from "../webchatEditor/constants"
+import { defaultStyleOptions } from "../webchatEditor/constants/defaultStyleOptions"
+import { customizationEntries } from '../webchatEditor/constants/customizationEntries'
+import { Category, UISelectorType } from "../utilities/types"
 
 export interface CustomizationEntry {
     id: string,
+    category: Category,
     displayName: string,
-    category: any, // TODO change to category interface
-    isAdvancedEntry: boolean,
-    uiSelectorType: any // TODO create uiSelectorType interface 
+    uiSelectorType: UISelectorType // TODO create uiSelectorType interface 
+    isAdvancedOption?: boolean,
 }
 
 export interface IAppState {
+    // Active catefory to be rendered in middle pane
+    activeCategory: Category,
     // Value of UI elements that determine style option value stored here
     customizationEntries: CustomizationEntry[],
     // Value of current style options stored here
@@ -141,7 +145,8 @@ export interface WebChatStyleOption {
 
 
 export const initialAppState: IAppState = {
-    customizationEntries: [], // TODO: populate with real data
+    activeCategory: Category.Color,
+    customizationEntries: customizationEntries,
     styleOptions: defaultStyleOptions,
     jsonIsInvalid: false
 }

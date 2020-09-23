@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { actionTypes, genericSingleAction } from "../../Redux/actions";
 import { Dispatch, AnyAction } from 'redux';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { defaultStyleOptions } from "../constants";
+import { defaultStyleOptions } from "../constants/defaultStyleOptions";
 import {
     Link,
     MessageBar,
