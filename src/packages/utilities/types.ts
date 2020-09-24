@@ -5,5 +5,10 @@ export enum Category {
 }
 
 export enum UISelectorType {
-    defaultSelector = 'defaultSelector'
+    defaultSelector = 'defaultSelector',
+    colorSelector = 'colorSelector',
+    percentageSelector = 'percentageSelector',
+    integerSelector = 'integerSelector',
+    dropDownSelector = 'dropDownSelector',
+    booleanSelector = 'booleanSelector' 
 }
