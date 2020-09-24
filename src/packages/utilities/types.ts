@@ -1,7 +1,7 @@
 export enum Category {
     Bubble = 'Bubble',
     Color = 'Color',
-    SendBox = 'SendBox'
+    SendBox = 'Send Box'
 }
 
 export enum UISelectorType {

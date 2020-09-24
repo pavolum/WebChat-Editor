@@ -13,5 +13,17 @@ export const customizationEntries: CustomizationEntry[] = [
         displayName: 'Bubble Border Radius',
         category: Category.Color,
         uiSelectorType: UISelectorType.defaultSelector,
+      },
+      {
+        id: 'botAvatarInitials',
+        displayName: 'Bot Avatar Initials',
+        category: Category.Bubble,
+        uiSelectorType: UISelectorType.defaultSelector,
+      },
+      {
+        id: 'userAvatarInitials',
+        displayName: 'User Avatar Initials',
+        category: Category.Bubble,
+        uiSelectorType: UISelectorType.defaultSelector,
       }
 ];
