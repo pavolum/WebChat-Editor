@@ -14,25 +14,28 @@ import { AvatarForm } from "./avatarForm";
 import { MiscForm } from "./miscForm";
 import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
 import WebChatJsonEditor from "./webChatJsonEditor";
+import { Category } from "../../utilities/types";
+import { CategoryLink } from "./categoryLink";
+import ConfigurationEntryViewer from "./configurationEntryViewer";
 
 ////////////////// Styling //////////////////
-let leftGridClassName = mergeStyles(
-    {
-        width: '66% !important',
-        height: '86vh',
-        overflowY: 'scroll',
-        marginTop: '20px'
-    }
-);
+// let leftGridClassName = mergeStyles(
+//     {
+//         width: '66% !important',
+//         height: '86vh',
+//         overflowY: 'scroll',
+//         marginTop: '20px'
+//     }
+// );
 
-let rightGridClassName = mergeStyles(
-    {
-        width: '34% !important',
-        paddingRight: '0px !important',
-        paddingLeft: '0px !important',
-        height: '100%'
-    }
-);
+// let rightGridClassName = mergeStyles(
+//     {
+//         width: '34% !important',
+//         paddingRight: '0px !important',
+//         paddingLeft: '0px !important',
+//         height: '100%'
+//     }
+// );
 
 const stackTokens = { childrenGap: 10 };
 
@@ -45,6 +48,7 @@ interface StateProps {
 
 interface DispatchProps {
     updateStyleElement: (styleElementName: string, value: any) => void,
+    updateRootStateVariable: (stateVariableName: string, value: any) => void
 }
 
 interface Props {
@@ -56,6 +60,15 @@ type PropsType = StateProps & DispatchProps & Props;
 export class WebChatEditor extends React.Component<PropsType> {
     constructor(props: PropsType) {
         super(props);
+    }
+
+
+    private RenderCategories = () => {
+        let resultingUIComponents = [];
+        for (let category in Category) {
+            resultingUIComponents.push(<CategoryLink name={category} updateRootStateVariable={this.props.updateRootStateVariable}/>)
+        }
+        return resultingUIComponents;
     }
 
     render() {
@@ -70,35 +83,17 @@ export class WebChatEditor extends React.Component<PropsType> {
 
             <div className="ms-Grid" dir="ltr">
                 <div className="ms-Grid-row">
-                    <div className={"ms-Grid-col ms-sm6 ms-md8 ms-lg10 " + leftGridClassName} >
-                        <Pivot >
-                            <PivotItem
-                                headerText="Standard"
-                                headerButtonProps={{
-                                    'data-order': 1,
-                                    'data-title': 'Standard',
-                                }}
-                            >
-                                <Stack tokens={stackTokens}>
+                    <div className={"ms-Grid-col ms-sm4 ms-md4 ms-lg4 " } >
+                        <Stack tokens={stackTokens}>
                                     <h4>Customize Your WebChat UI:</h4>
-                                    <p>Edit your web chat look and feel</p>
-                                    <CollapsibleHeader headerText="Color Settings" content={<ColorForm updateStyleElement={this.props.updateStyleElement} />} />
-                                    <CollapsibleHeader headerText="Font Settings" content={<FontForm updateStyleElement={this.props.updateStyleElement} />} />
-                                    <CollapsibleHeader headerText="Avatar Settings" content={<AvatarForm updateStyleElement={this.props.updateStyleElement} />} />
-                                    <CollapsibleHeader headerText="Misc. Settings" content={<MiscForm updateStyleElement={this.props.updateStyleElement} />} />
-                                </Stack>
-                            </PivotItem>
-                            <PivotItem
-                                headerText="Code Editor"
-                                headerButtonProps={{
-                                    'data-order': 2,
-                                    'data-title': 'Code Editor',
-                                }}
-                            >
-                                <WebChatJsonEditor />
-                            </PivotItem>
-                        </Pivot></div>
-                    <div className={"ms-Grid-col ms-sm6 ms-md4 ms-lg2 " + rightGridClassName} >
+                                    <p>Available Categories:</p>
+                                {this.RenderCategories()}
+                        </Stack>
+                    </div>
+                    <div className={"ms-Grid-col ms-sm4 ms-md4 ms-lg4 " } >
+                        <ConfigurationEntryViewer />
+                    </ div>
+                    <div className={"ms-Grid-col ms-sm4 ms-md4 ms-lg4 "     } >
                         <WebChat />
                     </div>
                 </div>
@@ -116,7 +111,10 @@ const mapStateToProps = (state: IAppState, ownProps: Props): StateProps => ({
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): DispatchProps => ({
     updateStyleElement: (styleElementName: string, value: any) => {
         dispatch(genericSingleAction<any>(actionTypes.UPDATE_STYLE_ELEMENT, { styleElementName: styleElementName, value: value }));
-    }
+    },
+    updateRootStateVariable: (stateVariableName: string, value: any) => {
+        dispatch(genericSingleAction<any>(actionTypes.UPDATE_ROOT_WEBCHAT_STATE_VARIABlE, {propertyName: stateVariableName, value: value}));
+    },
 });
 
 export default connect(
