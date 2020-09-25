@@ -145,7 +145,7 @@ export interface WebChatStyleOption {
 
 
 export const initialAppState: IAppState = {
-    activeCategory: Category.Color,
+    activeCategory: Category.ColorAndPaddings,
     customizationEntries: customizationEntries,
     styleOptions: defaultStyleOptions,
     jsonIsInvalid: false

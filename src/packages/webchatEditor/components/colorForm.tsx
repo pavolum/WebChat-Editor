@@ -50,6 +50,6 @@ export const ColorForm: React.FC<IColorFormProps> = (props: IColorFormProps) => 
                 <Label>User Chat Bubble Background Color</Label>
                 <SwatchColorPicker columnCount={5} cellShape={'square'} colorCells={chatBubbleBackgroundColorOptions} onColorChanged={(id?, color?) => { props.updateStyleElement("bubbleFromUserBackground", color) }} />
             </div>
-        </div>
+          </div>
     );
 }
