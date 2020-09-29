@@ -17,9 +17,10 @@ import WebChatJsonEditor from "./webChatJsonEditor";
 import { Category } from "../../utilities/types";
 import { CategoryLink } from "./categoryLink";
 import ConfigurationEntryViewer from "./configurationEntryViewer";
+import { hiddenContentStyle } from "@fluentui/react";
 
 ////////////////// Styling //////////////////
-// let leftGridClassName = mergeStyles(
+// cosnt leftGridClassName = mergeStyles(
 //     {
 //         width: '66% !important',
 //         height: '86vh',
@@ -28,7 +29,7 @@ import ConfigurationEntryViewer from "./configurationEntryViewer";
 //     }
 // );
 
-// let rightGridClassName = mergeStyles(
+// const rightGridClassName = mergeStyles(
 //     {
 //         width: '34% !important',
 //         paddingRight: '0px !important',
@@ -37,13 +38,40 @@ import ConfigurationEntryViewer from "./configurationEntryViewer";
 //     }
 // );
 
+const headerContainer = mergeStyles(
+    {
+        display: 'flex',
+        alignItems: 'center',
+        border: '1px solid #000000',
+        height: '80px',
+        paddingLeft: '40px',
+        // backgroundColor: 'lightPink',
+    }
+);
+
+const editorContainer = mergeStyles(
+    {
+        padding: '33px',
+        border: '1px solid #000000',
+        // backgroundColor: 'lightGreen',
+    }
+);
+
+const configurationEntriesContainer = mergeStyles(
+    {
+        height: '82vh',
+        // backgroundColor: 'purple !important',
+        overflowY: 'hidden',
+    }
+);
+
 const stackTokens = { childrenGap: 10 };
 
 
 ////////////////// WebChatEditor //////////////////
 
 interface StateProps {
-
+    activeCategory: Category;
 }
 
 interface DispatchProps {
@@ -65,35 +93,38 @@ export class WebChatEditor extends React.Component<PropsType> {
 
     private RenderCategories = () => {
         let resultingUIComponents = [];
+
+        const { activeCategory } = this.props;
+        
         for (let category in Category) {
-            resultingUIComponents.push(<CategoryLink name={category} updateRootStateVariable={this.props.updateRootStateVariable}/>)
+            resultingUIComponents.push(
+                <CategoryLink
+                    name={category}
+                    activeCategory={activeCategory}
+                    updateRootStateVariable={this.props.updateRootStateVariable}
+                />
+            );
         }
+
         return resultingUIComponents;
     }
 
     render() {
-
-        /* TODO: Pseudocode
-            
-            Loop through state.customizationEntries
-            For each entry
-
-        */
         return (
-
             <div className="ms-Grid" dir="ltr">
-                <div className="ms-Grid-row">
-                    <div className={"ms-Grid-col ms-sm4 ms-md4 ms-lg4 " } >
+                <div className={`ms-Grid-row ${headerContainer}`}>
+                    <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12">Customize Your Webchat UI</div>
+                </div>
+                <div className={`ms-Grid-row ${editorContainer}`}>
+                    <div className="ms-Grid-col ms-sm2 ms-md2 ms-lg2">
                         <Stack tokens={stackTokens}>
-                                    <h4>Customize Your WebChat UI:</h4>
-                                    <p>Available Categories:</p>
                                 {this.RenderCategories()}
                         </Stack>
                     </div>
-                    <div className={"ms-Grid-col ms-sm4 ms-md4 ms-lg4 " } >
+                    <div className={`ms-Grid-col ms-sm6 ms-md6 ms-lg6 ${configurationEntriesContainer}`}>
                         <ConfigurationEntryViewer />
                     </ div>
-                    <div className={"ms-Grid-col ms-sm4 ms-md4 ms-lg4 "     } >
+                    <div className="ms-Grid-col ms-sm4 ms-md4 ms-lg4">
                         <WebChat />
                     </div>
                 </div>
@@ -105,7 +136,7 @@ export class WebChatEditor extends React.Component<PropsType> {
 ////////////////// Redux //////////////////
 
 const mapStateToProps = (state: IAppState, ownProps: Props): StateProps => ({
-
+    activeCategory: state.activeCategory,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): DispatchProps => ({
