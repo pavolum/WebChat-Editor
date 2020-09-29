@@ -6,6 +6,16 @@ import { CustomizationEntry, IAppState, WebChatStyleOption } from "../../Redux/r
 import { genericSingleAction, actionTypes } from "../../Redux/actions";
 import { Category } from "../../utilities/types";
 import { CustomizationEntrySelector } from "./customizationEntrySelector";
+import { mergeStyles } from "@fluentui/react";
+
+const headerContianer = {};
+const entryViewerContainer = mergeStyles(
+    {   
+        display: 'block',
+        overflowY: 'auto',
+        maxHeight: '86%',
+    }
+);
 
 interface StateProps {
     activeCategory: Category;
@@ -50,7 +60,13 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
             return obj[key];
         }
         
-        return currentEntries.map((entry: CustomizationEntry) => (<CustomizationEntrySelector entry={entry} value={getStyleOptionValue(entry.id)} onChange = {updateStyleElement} />));
+        return currentEntries.map((entry: CustomizationEntry) => (
+            <CustomizationEntrySelector
+                entry={entry}
+                value={getStyleOptionValue(entry.id)}
+                onChange={updateStyleElement}
+            />
+        ));
     }
 
     render() {
@@ -59,8 +75,11 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
         
         return (
             <Fragment>
-                I will one day render the entries for category: {activeCategory}
-                {this.renderCurrentEntries()}
+                <h2>{activeCategory}</h2>
+                <p>{`Start building your ${activeCategory}.`}</p>
+                <div className={entryViewerContainer}>
+                    {this.renderCurrentEntries()}
+                </div>
             </Fragment>
         );
     }
