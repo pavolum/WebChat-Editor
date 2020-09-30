@@ -12,15 +12,10 @@ const subCategoryHeaderStyle = mergeStyles(
       fontSize: '1rem',
       color: '#212529',
       fontWeight: 'bold',
+      cursor: 'pointer',
     }
 );
 
-
-
-/*
-const items: IExampleItem[] = createListItems(20);
-const groups: IGroup[] = createGroups(4, 0, 0, 5);
-*/
 interface CustomizationEntrySubCategoryProps {
     entries: CustomizationEntry[];
     subCategory: string;
