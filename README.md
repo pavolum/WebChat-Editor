@@ -3,6 +3,8 @@
 ## Description
 This app provides a GUI where you can customize the look and feel of a bot framework web chat instance without touching code! After customizing the look and feel you can export a `StyleOptions` json object which you can use in your own webchat instance so it reflects the customizations selected in this app. 
 
+Test out the latest published app here: https://webchateditor.azurewebsites.net/. We will incrementally publish as new features are pushed to main. 
+
 ## Resources
 - [Bot Framework Web Chat Repo](https://github.com/microsoft/BotFramework-WebChat/)
 - [List of available web chat customizations](https://github.com/microsoft/BotFramework-WebChat/blob/master/packages/component/src/Styles/defaultStyleOptions.js)
