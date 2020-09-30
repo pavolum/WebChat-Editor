@@ -1,15 +1,17 @@
 export enum Category {
-    Avatar = 'Avatar',
-    ChatBubble = 'Chat Bubble',
+    // The order of this enum will effect
+    // the order they render on the webapp
     ColorAndPaddings = 'Color & Paddings',
-    ConnectivityUI = 'Connectivity UI',
     Fonts = 'Fonts',
-    Miscellaneous = 'Miscellaneous',
+    ChatBubble = 'Chat Bubble',
+    Avatar = 'Avatar',
+    ConnectivityUI = 'Connectivity UI',
     SendBox = 'Send Box',
     SuggestedActions = 'Suggested Actions',
     Timestamp = 'Timestamp',
     ToastUI = 'Toast UI',
     TranscriptOverlayButtons = 'Transcript Overlay Buttons',
+    Miscellaneous = 'Miscellaneous',
 }
 
 export enum SubCategory {
