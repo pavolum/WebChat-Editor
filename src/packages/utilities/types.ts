@@ -3,7 +3,6 @@ export enum Category {
     Fonts = 'Fonts',
     Avatar = 'Avatar',
     ChatBubble = 'Chat Bubble',
-    Markdown = 'Markdown',
     SendBox = 'Send Box',
     SuggestedActions = 'Suggested Actions',
     Timestamp = 'Timestamp',
@@ -11,6 +10,28 @@ export enum Category {
     ConnectivityUI = 'Connectivity UI',
     ToastUI = 'Toast UI',
     Miscellaneous = 'Miscellaneous',
+}
+
+export enum SubCategory {
+    BotAvatar = 'Bot Avatar',
+    UserAvatar = 'User Avatar',
+    AvatarChatBubble = 'Avatar Chat Bubble',
+    UserChatBubble = 'User Chat Bubble',
+    Border = 'Border',
+    BorderDisabled = 'Border (Disabled)',
+    ButtonColors = 'Button Colors',
+    CarouselFlipper = 'Carousel Flipper',
+    Container = 'Container',
+    ButtonDefault = 'Button: Default',
+    ButtonOnFocus = 'Button: On Focus',
+    ButtonOnHover = 'Button: On Hover',
+    TypingAnimation = 'Typing Animation',
+    SpinnerAnimation = 'Spinner Animation',
+    UploadThumbnail = 'Upload Thumbnail',
+    Info = 'Info',
+    Error = 'Error',
+    Success = 'Success',
+    Warn = 'Warn',
 }
 
 export enum UISelectorType {
