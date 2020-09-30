@@ -4,8 +4,9 @@ import { connect } from "react-redux";
 import { Dispatch, AnyAction } from 'redux';
 import { CustomizationEntry, IAppState, WebChatStyleOption } from "../../Redux/reduxState";
 import { genericSingleAction, actionTypes } from "../../Redux/actions";
-import { Category } from "../../utilities/types";
+import { Category, SubCategory } from "../../utilities/types";
 import { CustomizationEntrySelector } from "./customizationEntrySelector";
+import { CustomizationEntrySubCategory } from "./customizationEntrySubCategory";
 import { mergeStyles } from "@fluentui/react";
 
 const headerContianer = {};
@@ -14,6 +15,12 @@ const entryViewerContainer = mergeStyles(
         display: 'block',
         overflowY: 'auto',
         maxHeight: '86%',
+    }
+);
+
+const defaultEntriesContainer = mergeStyles(
+    {   
+        marginBottom: '10px',
     }
 );
 
@@ -44,11 +51,26 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
     // Render UI Array
     renderCurrentEntries = () => {
         const { customizationEntries, activeCategory, styleOptions, updateStyleElement } = this.props;
-        const currentEntries: CustomizationEntry[] = [];
+        const defaultEntries: CustomizationEntry[] = [];
+        
+        type subCategoryEntryObject = {
+            [key: string]: CustomizationEntry[];
+        };
+        const subCategoryEntries: subCategoryEntryObject = {};
         
         customizationEntries.forEach((entry: CustomizationEntry) => {
+            const { subCategory } = entry;
             if (entry.category === activeCategory) {
-                currentEntries.push(entry);
+                if (!subCategory) {
+                    defaultEntries.push(entry);
+                } else {
+                    const subAsString = subCategory.toString();
+                    if (subCategoryEntries[subAsString]) {
+                        subCategoryEntries[subAsString].push(entry);
+                    } else {
+                        subCategoryEntries[subAsString] = [entry];
+                    }
+                }
             }
         });
 
@@ -60,13 +82,32 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
             return obj[key];
         }
         
-        return currentEntries.map((entry: CustomizationEntry) => (
-            <CustomizationEntrySelector
-                entry={entry}
-                value={getStyleOptionValue(entry.id)}
-                onChange={updateStyleElement}
-            />
-        ));
+        
+        return (
+            <div>
+                <div className={defaultEntriesContainer}>
+                    {defaultEntries.map((entry: CustomizationEntry) => (
+                        <CustomizationEntrySelector
+                            entry={entry}
+                            value={getStyleOptionValue(entry.id)}
+                            onChange={updateStyleElement}
+                        />
+                ))}
+                </div>
+                <div>
+                    {Object.keys(subCategoryEntries).map(
+                        (subCategory) => (
+                            <CustomizationEntrySubCategory
+                                entries={subCategoryEntries[subCategory]}
+                                subCategory={subCategory}
+                                styleOptions={styleOptions}
+                                updateStyleElement={updateStyleElement}
+                            />
+                        )
+                    )}
+                </div>
+            </div>
+        );    
     }
 
     render() {
