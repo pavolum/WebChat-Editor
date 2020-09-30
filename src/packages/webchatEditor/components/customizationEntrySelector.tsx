@@ -6,8 +6,14 @@ import { CustomizationEntry, IAppState, WebChatStyleOption } from "../../Redux/r
 import { genericSingleAction, actionTypes } from "../../Redux/actions";
 import { UISelectorType } from "../../utilities/types";
 import { DefaultSelector } from "./defaultSelector";
+import { mergeStyles } from "@fluentui/react";
 
-
+const UI_selector = mergeStyles(
+    {   
+        fontSize: '1rem',
+        fontWeight: '400',
+    }
+);
 
 interface CustomizationEntrySelectorProps {
     entry: CustomizationEntry;
@@ -28,7 +34,7 @@ export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProp
     }
 
     return (
-        <div >
+        <div className={UI_selector}>
             {displayName}
             {renderSelector(entry.uiSelectorType)}
         </div>

@@ -1,10 +1,11 @@
 import { defaultStyleOptions } from "../webchatEditor/constants/defaultStyleOptions"
 import { customizationEntries } from '../webchatEditor/constants/customizationEntries'
-import { Category, UISelectorType } from "../utilities/types"
+import { Category, SubCategory, UISelectorType } from "../utilities/types"
 
 export interface CustomizationEntry {
     id: string,
     category: Category,
+    subCategory?: SubCategory,
     displayName: string,
     uiSelectorType: UISelectorType // TODO create uiSelectorType interface 
     isAdvancedOption?: boolean,

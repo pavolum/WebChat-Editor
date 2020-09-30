@@ -8,16 +8,16 @@ import { mergeStyles, mergeStyleSets } from '@uifabric/merge-styles';
 
 let WebChatContainerClassName = mergeStyles(
     {
-        height: '80vh',
+        height: '70vh',
         margin: '20px 25px'
     }
 );
 
 let WebChatPaneClassName = mergeStyles(
     {
-        height: '92vh',
+        height: '82vh',
         background: '#D2D6D9',
-        padding: '30px 20px'
+        padding: '30px 20px' 
     }
 );
 
