@@ -6,7 +6,7 @@ import { mergeStyleSets, IRawStyle } from 'office-ui-fabric-react/lib/Styling';
 import { CustomizationEntry, WebChatStyleOption } from '../../Redux/reduxState';
 import { CustomizationEntrySelector } from './customizationEntrySelector';
 import { mergeStyles } from '@fluentui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Collapse } from 'react-bootstrap';
 
 const subCategoryHeaderStyle = mergeStyles(
@@ -28,6 +28,10 @@ interface CustomizationEntrySubCategoryProps {
 export const CustomizationEntrySubCategory = (props: CustomizationEntrySubCategoryProps) => {
     const { entries, subCategory, styleOptions, updateStyleElement } = props;
     const [isCollapsed, setIsCollapsed] = useState(true);
+
+    useEffect(() => {
+        setIsCollapsed(true); // collapses subCategory headers
+    }, [subCategory]);        // when new Category is selected
 
     const onRenderHeader = (props?: IGroupHeaderProps): JSX.Element | null => {
         if (props) {
