@@ -6,21 +6,18 @@ import { mergeStyleSets, IRawStyle } from 'office-ui-fabric-react/lib/Styling';
 import { CustomizationEntry, WebChatStyleOption } from '../../Redux/reduxState';
 import { CustomizationEntrySelector } from './customizationEntrySelector';
 import { mergeStyles } from '@fluentui/react';
+import { useState } from 'react';
+import { Collapse } from 'react-bootstrap';
 
 const subCategoryHeaderStyle = mergeStyles(
     {
       fontSize: '1rem',
       color: '#212529',
       fontWeight: 'bold',
+      cursor: 'pointer',
     }
 );
 
-
-
-/*
-const items: IExampleItem[] = createListItems(20);
-const groups: IGroup[] = createGroups(4, 0, 0, 5);
-*/
 interface CustomizationEntrySubCategoryProps {
     entries: CustomizationEntry[];
     subCategory: string;
@@ -30,11 +27,13 @@ interface CustomizationEntrySubCategoryProps {
 
 export const CustomizationEntrySubCategory = (props: CustomizationEntrySubCategoryProps) => {
     const { entries, subCategory, styleOptions, updateStyleElement } = props;
+    const [isCollapsed, setIsCollapsed] = useState(true);
 
     const onRenderHeader = (props?: IGroupHeaderProps): JSX.Element | null => {
         if (props) {
           const toggleCollapse = (): void => {
             props.onToggleCollapse!(props.group!);
+            setIsCollapsed(!Collapse);
           };
           return (
             <div
@@ -91,7 +90,7 @@ export const CustomizationEntrySubCategory = (props: CustomizationEntrySubCatego
         name: subCategory,
         startIndex: 0,
         data: entries,
-        isCollapsed: true,
+        isCollapsed: isCollapsed,
     }
     return (
         <GroupedList items={entries} onRenderCell={onRenderCell} groupProps={groupedListProps} groups={[subCategoryGroup]} />

@@ -44,31 +44,32 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
     constructor(props: PropsType) {
         super(props);
     }
-    // TODO: Loop through state.customizationEntries, pull entries whose category = state.activeCategory and add them to CustomizataionEntry[] entriesToRender;
 
-
-    // Loop through `entriesToRender` and create an array of UI selector components where each UI selector corresponds to the entry.selectorType for the entry in question
-    // Render UI Array
     renderCurrentEntries = () => {
         const { customizationEntries, activeCategory, styleOptions, updateStyleElement } = this.props;
-        const defaultEntries: CustomizationEntry[] = [];
-        
-        type subCategoryEntryObject = {
-            [key: string]: CustomizationEntry[];
-        };
-        const subCategoryEntries: subCategoryEntryObject = {};
-        
-        customizationEntries.forEach((entry: CustomizationEntry) => {
-            const { subCategory } = entry;
+        const entriesBySubcategory: CustomizationEntry[][] = [];
+
+        const pushToLastSubcategory = (entry: CustomizationEntry): void => {
+            const lastIndex: number = entriesBySubcategory.length - 1;
+            entriesBySubcategory[lastIndex].push(entry);
+        }
+
+        const pushToNewSubcategory = (entry: CustomizationEntry):void => {
+            entriesBySubcategory.push([entry]);
+        }
+
+        customizationEntries.forEach((entry: CustomizationEntry, index: number) => {
             if (entry.category === activeCategory) {
-                if (!subCategory) {
-                    defaultEntries.push(entry);
+                const lastIndex: number = entriesBySubcategory.length - 1;
+                const lastGroup: CustomizationEntry[] | undefined = entriesBySubcategory[lastIndex];
+                if (!lastGroup) {
+                    pushToNewSubcategory(entry);
                 } else {
-                    const subAsString = subCategory.toString();
-                    if (subCategoryEntries[subAsString]) {
-                        subCategoryEntries[subAsString].push(entry);
+                    const lastEntry: CustomizationEntry = lastGroup[lastGroup.length - 1];
+                    if (lastEntry.subCategory === entry.subCategory) {
+                        pushToLastSubcategory(entry);
                     } else {
-                        subCategoryEntries[subAsString] = [entry];
+                        pushToNewSubcategory(entry);
                     }
                 }
             }
@@ -81,33 +82,40 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
         function prop<T, K extends keyof T>(obj: T, key: K) {
             return obj[key];
         }
-        
+
+        const mapArrayWithNoSubcategory = (array: CustomizationEntry[]) => (
+            <div className={defaultEntriesContainer}>
+                {array.map((entry: CustomizationEntry) => (
+                    <CustomizationEntrySelector
+                        entry={entry}
+                        value={getStyleOptionValue(entry.id)}
+                        onChange={updateStyleElement}
+                    />
+                ))}
+            </div>
+        );
+
+        const mapArrayWithSubcategory = (array: CustomizationEntry[]) => (
+            <CustomizationEntrySubCategory
+                    entries={array}
+                    subCategory={array[0].subCategory!.toString()}
+                    styleOptions={styleOptions}
+                    updateStyleElement={updateStyleElement}
+            />
+        );
         
         return (
             <div>
-                <div className={defaultEntriesContainer}>
-                    {defaultEntries.map((entry: CustomizationEntry) => (
-                        <CustomizationEntrySelector
-                            entry={entry}
-                            value={getStyleOptionValue(entry.id)}
-                            onChange={updateStyleElement}
-                        />
-                ))}
-                </div>
-                <div>
-                    {Object.keys(subCategoryEntries).map(
-                        (subCategory) => (
-                            <CustomizationEntrySubCategory
-                                entries={subCategoryEntries[subCategory]}
-                                subCategory={subCategory}
-                                styleOptions={styleOptions}
-                                updateStyleElement={updateStyleElement}
-                            />
-                        )
-                    )}
-                </div>
+                {entriesBySubcategory.map((subCategoryArray) => {
+                    const testEntry = subCategoryArray[0];
+                    if (testEntry.subCategory) {
+                        return mapArrayWithSubcategory(subCategoryArray);
+                    } else {
+                        return mapArrayWithNoSubcategory(subCategoryArray);
+                    }
+                })}
             </div>
-        );    
+        );
     }
 
     render() {

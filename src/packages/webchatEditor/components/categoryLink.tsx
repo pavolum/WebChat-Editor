@@ -6,6 +6,13 @@ import { IAppState } from "../../Redux/reduxState";
 import { genericSingleAction, actionTypes } from "../../Redux/actions";
 import { Category } from "../../utilities/types";
 import CSS from 'csstype';
+import { mergeStyles } from "@fluentui/react";
+
+const categoryHeader = mergeStyles(
+    {   
+        cursor: 'pointer',
+    }
+);
 
 interface CategoryLinkProps {
     name: string;
@@ -47,6 +54,7 @@ export const CategoryLink = (props: CategoryLinkProps) => {
     return (
         <div
             onClick={() => {updateRootStateVariable('activeCategory', displayName)}}
+            className={categoryHeader}
         >
             <span>
                 {conditionalIcon()}
