@@ -49,7 +49,7 @@ export interface WebChatStyleOption {
     bubbleFromUserBorderRadius: number;
     bubbleFromUserBorderStyle: string;
     bubbleFromUserBorderWidth: number;
-    bubbleFromUserNubOffset: string;
+    bubbleFromUserNubOffset: number | 'bottom';
     bubbleFromUserNubSize: number;
     bubbleFromUserTextColor: string;
     bubbleImageHeight: number;
