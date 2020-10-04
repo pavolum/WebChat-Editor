@@ -25,11 +25,12 @@ interface CustomizationEntrySelectorProps {
     value: any;
     onChange: (styleElementName: string, value: any) => void;
     updateRootStateVariable: (stateVariableName: string, value: any) => void;
+    displayColorModal: boolean;
     colorValue: string;
 }
 
 export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProps) => {
-    const { entry, value, onChange, updateRootStateVariable, colorValue } = props;
+    const { entry, value, onChange, updateRootStateVariable, colorValue, displayColorModal } = props;
     const { displayName, id } = entry;
 
     const renderSelector = (type: UISelectorType) => {
@@ -41,7 +42,7 @@ export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProp
                 case UISelectorType.percentageSelector:
                     return <PercentageSelector id={id} onChange={onChange} value={value}/>
                     case UISelectorType.colorSelector:
-                        return <ColorSelector id={id} onChange={onChange} value={value} updateRootStateVariable={updateRootStateVariable} colorValue={colorValue} />
+                        return <ColorSelector id={id} onChange={onChange} value={value} displayColorModal={displayColorModal} updateRootStateVariable={updateRootStateVariable} colorValue={colorValue} />
             case UISelectorType.defaultSelector:
             default:
                 return <DefaultSelector id={id} onChange={onChange} value={value}/> 

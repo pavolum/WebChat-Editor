@@ -18,7 +18,8 @@ import {ColorSelector} from './colorSelector';
 
 interface ColorSelectorInModalProps {
   updateRootStateVariable: (stateVariableName: string, value: any) => void;
-
+  displayColorModal: boolean;
+  colorValue: string;
 }
 
 const dragOptions: IDragOptions = {
@@ -29,45 +30,19 @@ const dragOptions: IDragOptions = {
 const cancelIcon: IIconProps = { iconName: 'Cancel' };
 //props will a child of ColorSelectorInModal
 const ColorSelectorInModal: React.FunctionComponent<ColorSelectorInModalProps>  = (props ) => {
-  const {updateRootStateVariable} = props;
-  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false);
+  
+  const {updateRootStateVariable, colorValue, displayColorModal} = props;
+  console.log('displayColorModal: ', displayColorModal)
+
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(displayColorModal);
   const [isDraggable, { toggle: toggleIsDraggable }] = useBoolean(false);
   updateRootStateVariable('displayColorModal', isModalOpen)
-  console.log('isModel: ', isModalOpen)
+
+  console.log('displayColorModal: ', displayColorModal)
   // Use useId() to ensure that the IDs are unique on the page.
   // (It's also okay to use plain strings and manually ensure uniqueness.)
   const titleId = useId('title');
-
-  return (
-    <div>
-        <Icon className={contentStyles.currentColorStyles} iconName="SquareShapeSolid" onClick={showModal} />
-      <Modal
-        titleAriaId={titleId}
-        isOpen={isModalOpen}
-        onDismiss={hideModal}
-        isModeless={true}
-        containerClassName={contentStyles.container}
-        dragOptions={isDraggable ? dragOptions : undefined}
-        isBlocking
-      >
-        <div className={contentStyles.header}>
-          <span id={titleId}>Lorem Ipsum</span>
-          <IconButton
-            styles={iconButtonStyles}
-            iconProps={cancelIcon}
-            ariaLabel="Close popup modal"
-            onClick={hideModal}
-          />
-        </div>
-        <div className={contentStyles.body}>
-            {props.children}
-        </div>
-      </Modal>
-    </div>
-  );
-};
-
-const theme = getTheme();
+  const theme = getTheme();
 const contentStyles = mergeStyleSets({
   container: {
     display: 'flex',
@@ -88,7 +63,12 @@ const contentStyles = mergeStyleSets({
       padding: '12px 12px 14px 24px',
     },
   ],
-  currentColorStyles: {width: '24px', height: '24px'},
+  currentColorStyles: {
+    backgroundColor: `${colorValue}`,
+    width: '24px',
+    height: '24px',
+    cursor: 'pointer',
+  },
   body: {
     flex: '4 4 auto',
     padding: '0 24px 24px 24px',
@@ -113,5 +93,35 @@ const iconButtonStyles = {
     color: theme.palette.neutralDark,
   },
 };
+
+  return (
+    
+    <div className={contentStyles.currentColorStyles} onClick={showModal} >
+      <Modal
+        titleAriaId={titleId}
+        isOpen={displayColorModal}
+        onDismiss={hideModal}
+        isModeless={true}
+        containerClassName={contentStyles.container}
+        dragOptions={isDraggable ? dragOptions : undefined}
+        isBlocking
+      >
+        <div className={contentStyles.header}>
+          <span id={titleId}>Lorem Ipsum</span>
+          <IconButton
+            styles={iconButtonStyles}
+            iconProps={cancelIcon}
+            ariaLabel="Close popup modal"
+            onClick={hideModal} />
+        </div>
+        <div className={contentStyles.body}>
+          {props.children}
+        </div>
+      </Modal>
+    </div>
+
+  );
+};
+
 
 export default ColorSelectorInModal;

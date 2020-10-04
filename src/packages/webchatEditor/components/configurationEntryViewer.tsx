@@ -30,6 +30,7 @@ interface StateProps {
     activeCategory: Category;
     customizationEntries: CustomizationEntry[];
     styleOptions: WebChatStyleOption;
+    displayColorModal: boolean;
     colorValue: string;
 }
 
@@ -43,6 +44,7 @@ interface Props {
 }
 
 type PropsType = StateProps & DispatchProps & Props;
+
 
 export class ConfigurationEntryViewer extends React.Component<PropsType> {
     constructor(props: PropsType) {
@@ -75,7 +77,7 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
     }
 
     getStyleOptionValue = (key: any) => {
-        const { styleOptions } = this.props;
+        const { styleOptions} = this.props;
         return this.prop(styleOptions, key);
     };
 
@@ -84,7 +86,7 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
     }
     
     mapSubCategoriesObjectToReactElements = (subCategoryObject: ISubCategoryObject) => {
-        const { styleOptions, updateStyleElement, updateRootStateVariable, colorValue } = this.props;
+        const { styleOptions, updateStyleElement, updateRootStateVariable, colorValue, displayColorModal } = this.props;
         return (
             <div>
                 {Object.keys(subCategoryObject).map((key) => {
@@ -96,6 +98,7 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
                                             value={this.getStyleOptionValue(entry.id)}
                                             onChange={updateStyleElement}
                                             updateRootStateVariable={updateRootStateVariable}
+                                            displayColorModal={displayColorModal}
                                             colorValue={colorValue}
                                         />
                                     ))}
@@ -108,6 +111,7 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
                                     updateStyleElement={updateStyleElement}
                                     updateRootStateVariable={updateRootStateVariable}
                                     colorValue={colorValue}
+                                    displayColorModal={displayColorModal}
                                 />
                     }
                 })}
@@ -136,7 +140,7 @@ const mapStateToProps = (state: IAppState, ownProps: Props): StateProps => ({
     customizationEntries: state.customizationEntries,
     styleOptions: state.styleOptions,
     colorValue: state.colorValue,
-
+    displayColorModal: state.displayColorModal,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): DispatchProps => ({
