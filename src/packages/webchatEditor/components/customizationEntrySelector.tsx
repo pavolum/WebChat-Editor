@@ -9,6 +9,7 @@ import { DefaultSelector } from "./defaultSelector";
 import { BooleanSelector } from "./booleanSelector";
 import { IntegerSelector } from "./integerSelector";
 import { PercentageSelector } from "./percentageSelector";
+import { ColorSelector } from "./colorSelector";
 
 import { mergeStyles } from "@fluentui/react";
 
@@ -23,10 +24,12 @@ interface CustomizationEntrySelectorProps {
     entry: CustomizationEntry;
     value: any;
     onChange: (styleElementName: string, value: any) => void;
+    updateRootStateVariable: (stateVariableName: string, value: any) => void;
+    colorValue: string;
 }
 
 export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProps) => {
-    const { entry, value, onChange } = props;
+    const { entry, value, onChange, updateRootStateVariable, colorValue } = props;
     const { displayName, id } = entry;
 
     const renderSelector = (type: UISelectorType) => {
@@ -37,6 +40,8 @@ export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProp
                 return <IntegerSelector id={id} onChange={onChange} value={value}/>
                 case UISelectorType.percentageSelector:
                     return <PercentageSelector id={id} onChange={onChange} value={value}/>
+                    case UISelectorType.colorSelector:
+                        return <ColorSelector id={id} onChange={onChange} value={value} updateRootStateVariable={updateRootStateVariable} colorValue={colorValue} />
             case UISelectorType.defaultSelector:
             default:
                 return <DefaultSelector id={id} onChange={onChange} value={value}/> 

@@ -30,6 +30,7 @@ interface StateProps {
     activeCategory: Category;
     customizationEntries: CustomizationEntry[];
     styleOptions: WebChatStyleOption;
+    colorValue: string;
 }
 
 interface DispatchProps {
@@ -37,6 +38,7 @@ interface DispatchProps {
 }
 
 interface Props {
+    updateRootStateVariable: (stateVariableName: string, value: any) => void,
 
 }
 
@@ -82,7 +84,7 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
     }
     
     mapSubCategoriesObjectToReactElements = (subCategoryObject: ISubCategoryObject) => {
-        const { styleOptions, updateStyleElement } = this.props;
+        const { styleOptions, updateStyleElement, updateRootStateVariable, colorValue } = this.props;
         return (
             <div>
                 {Object.keys(subCategoryObject).map((key) => {
@@ -93,6 +95,8 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
                                             entry={entry}
                                             value={this.getStyleOptionValue(entry.id)}
                                             onChange={updateStyleElement}
+                                            updateRootStateVariable={updateRootStateVariable}
+                                            colorValue={colorValue}
                                         />
                                     ))}
                                 </div>
@@ -102,6 +106,8 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
                                     subCategory={key}
                                     styleOptions={styleOptions}
                                     updateStyleElement={updateStyleElement}
+                                    updateRootStateVariable={updateRootStateVariable}
+                                    colorValue={colorValue}
                                 />
                     }
                 })}
@@ -129,6 +135,8 @@ const mapStateToProps = (state: IAppState, ownProps: Props): StateProps => ({
     activeCategory: state.activeCategory,
     customizationEntries: state.customizationEntries,
     styleOptions: state.styleOptions,
+    colorValue: state.colorValue,
+
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): DispatchProps => ({
