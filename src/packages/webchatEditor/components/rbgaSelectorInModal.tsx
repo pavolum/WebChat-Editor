@@ -14,7 +14,7 @@ import {
 } from 'office-ui-fabric-react';
 
 
-interface ColorSelectorInModalProps {
+interface RbgaSelectorInModalProps {
   updateRootStateVariable: (stateVariableName: string, value: any) => void;
   displayColorModal: boolean;
   colorValue: string;
@@ -27,7 +27,7 @@ const dragOptions: IDragOptions = {
 };
 const cancelIcon: IIconProps = { iconName: 'Cancel' };
 //props will a child of ColorSelectorInModal
-const ColorSelectorInModal: React.FunctionComponent<ColorSelectorInModalProps>  = (props ) => {
+const RbgaSelectorInModal: React.FunctionComponent<RbgaSelectorInModalProps>  = (props ) => {
   
   const {updateRootStateVariable, colorValue, displayColorModal} = props;
 
@@ -99,7 +99,6 @@ const iconButtonStyles = {
         onDismiss={hideModal}
         containerClassName={contentStyles.container}
         isDarkOverlay={false}
-
         dragOptions={isDraggable ? dragOptions : undefined}
         
       >
@@ -122,4 +121,4 @@ const iconButtonStyles = {
 };
 
 
-export default ColorSelectorInModal;
+export default RbgaSelectorInModal;

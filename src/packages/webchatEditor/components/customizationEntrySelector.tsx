@@ -10,6 +10,7 @@ import { BooleanSelector } from "./booleanSelector";
 import { IntegerSelector } from "./integerSelector";
 import { PercentageSelector } from "./percentageSelector";
 import { ColorSelector } from "./colorSelector";
+import {RbgaSelector} from './rbgaSelector'
 
 import { mergeStyles } from "@fluentui/react";
 
@@ -43,6 +44,8 @@ export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProp
                     return <PercentageSelector id={id} onChange={onChange} value={value}/>
                     case UISelectorType.colorSelector:
                         return <ColorSelector id={id} onChange={onChange} value={value} displayColorModal={displayColorModal} updateRootStateVariable={updateRootStateVariable} colorValue={colorValue} />
+                    case UISelectorType.rbgaSelector:
+                        return <RbgaSelector id={id} onChange={onChange} value={value} displayColorModal={displayColorModal} updateRootStateVariable={updateRootStateVariable} colorValue={colorValue}/>
             case UISelectorType.defaultSelector:
             default:
                 return <DefaultSelector id={id} onChange={onChange} value={value}/> 
