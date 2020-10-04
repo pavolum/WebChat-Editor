@@ -50,14 +50,15 @@ interface ColorSelectorProps {
   colorValue: string;
 }
 
+
 export const ColorSelector = (props: ColorSelectorProps) => {
-  const { id, value, updateRootStateVariable, onChange, colorValue, displayColorModal} = props;
+  const { id, value, updateRootStateVariable, onChange, displayColorModal} = props;
   const [color, setColor] = React.useState(value);
   const updateColor = React.useCallback((ev: any, colorObj: IColor) =>{
     onChange(id, '#' + colorObj.hex);
-    updateRootStateVariable('colorValue', '#' + colorObj.hex)
-    setColor(colorObj.hex);
-  }, [id, onChange, updateRootStateVariable]); 
+    setColor('#' + colorObj.hex);
+    updateRootStateVariable('colorValue', color)
+  }, [color, id, onChange, updateRootStateVariable]); 
 
 
   return (

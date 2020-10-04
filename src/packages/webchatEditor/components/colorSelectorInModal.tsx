@@ -36,20 +36,20 @@ const ColorSelectorInModal: React.FunctionComponent<ColorSelectorInModalProps>  
 
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(displayColorModal);
   const [isDraggable, { toggle: toggleIsDraggable }] = useBoolean(false);
-  updateRootStateVariable('displayColorModal', isModalOpen)
-
   console.log('displayColorModal: ', displayColorModal)
   // Use useId() to ensure that the IDs are unique on the page.
   // (It's also okay to use plain strings and manually ensure uniqueness.)
   const titleId = useId('title');
   const theme = getTheme();
 const contentStyles = mergeStyleSets({
+  parent: {
+    
+  }
   container: {
     display: 'flex',
     flexFlow: 'column nowrap',
     alignItems: 'stretch',
     width: 'auto',
-    hieght: '100%',
   },
   header: [
     theme.fonts.xLargePlus,
@@ -68,6 +68,7 @@ const contentStyles = mergeStyleSets({
     width: '24px',
     height: '24px',
     cursor: 'pointer',
+    border: 'solid',
   },
   body: {
     flex: '4 4 auto',
@@ -95,16 +96,17 @@ const iconButtonStyles = {
 };
 
   return (
-    
+    <div className={contentStyles.parent}>
     <div className={contentStyles.currentColorStyles} onClick={showModal} >
       <Modal
         titleAriaId={titleId}
-        isOpen={displayColorModal}
+        isOpen={isModalOpen}
         onDismiss={hideModal}
-        isModeless={true}
         containerClassName={contentStyles.container}
+        isDarkOverlay={false}
+
         dragOptions={isDraggable ? dragOptions : undefined}
-        isBlocking
+        
       >
         <div className={contentStyles.header}>
           <span id={titleId}>Lorem Ipsum</span>
@@ -118,6 +120,7 @@ const iconButtonStyles = {
           {props.children}
         </div>
       </Modal>
+    </div>
     </div>
 
   );
