@@ -97,9 +97,7 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
                                             entry={entry}
                                             value={this.getStyleOptionValue(entry.id)}
                                             onChange={updateStyleElement}
-                                            updateRootStateVariable={updateRootStateVariable}
-                                            displayColorModal={displayColorModal}
-                                            colorValue={colorValue}
+
                                         />
                                     ))}
                                 </div>
@@ -109,9 +107,6 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
                                     subCategory={key}
                                     styleOptions={styleOptions}
                                     updateStyleElement={updateStyleElement}
-                                    updateRootStateVariable={updateRootStateVariable}
-                                    colorValue={colorValue}
-                                    displayColorModal={displayColorModal}
                                 />
                     }
                 })}

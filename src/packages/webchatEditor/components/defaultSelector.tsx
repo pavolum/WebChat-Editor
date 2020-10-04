@@ -20,7 +20,7 @@ export const DefaultSelector = (props: DefaultSelectorProps) => {
 
     return (
         <Fragment>
-            <TextField value={value} onChange={(e: any, newValue?: string) => {onChange(id, newValue)}}/>
+            <TextField value={value} onChange={(e: any, newValue?: string) => {onChange(id, newValue)}} autoAdjustHeight/>
         </Fragment>
     );
 }

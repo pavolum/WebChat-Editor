@@ -41,14 +41,10 @@ interface CustomizationEntrySubCategoryProps {
     subCategory: string;
     styleOptions: WebChatStyleOption;
     updateStyleElement: (styleElementName: string, value: any) => void;
-    updateRootStateVariable: (stateVariableName: string, value: any) => void,
-    displayColorModal: boolean,
-    colorValue: string;
-
 }
 
 export const CustomizationEntrySubCategory = (props: CustomizationEntrySubCategoryProps) => {
-    const { entries, subCategory, styleOptions, updateStyleElement, updateRootStateVariable, colorValue, displayColorModal,
+    const { entries, subCategory, styleOptions, updateStyleElement,
 } = props;
     const [isCollapsed, setIsCollapsed] = useState(true);
 
@@ -87,9 +83,6 @@ export const CustomizationEntrySubCategory = (props: CustomizationEntrySubCatego
                                         entry={entry}
                                         value={getStyleOptionValue(entry.id)}
                                         onChange={updateStyleElement}
-                                        updateRootStateVariable={updateRootStateVariable}
-                                        colorValue={colorValue}
-                                        displayColorModal={displayColorModal}
                                     />
                                 )
                             )}

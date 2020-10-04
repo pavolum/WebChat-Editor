@@ -15,8 +15,6 @@ import {
 
 
 interface ColorSelectorInModalProps {
-  updateRootStateVariable: (stateVariableName: string, value: any) => void;
-  displayColorModal: boolean;
   colorValue: string;
 }
 
@@ -29,9 +27,9 @@ const cancelIcon: IIconProps = { iconName: 'Cancel' };
 //props will a child of ColorSelectorInModal
 const ColorSelectorInModal: React.FunctionComponent<ColorSelectorInModalProps>  = (props ) => {
   
-  const {updateRootStateVariable, colorValue, displayColorModal} = props;
+  const { colorValue} = props;
 
-  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(displayColorModal);
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false);
   const [isDraggable, { toggle: toggleIsDraggable }] = useBoolean(false);
 
   const titleId = useId('title');
@@ -60,10 +58,12 @@ const contentStyles = mergeStyleSets({
   ],
   currentColorStyles: {
     backgroundColor: `${colorValue}`,
-    width: '24px',
-    height: '24px',
+    width: '30px',
+    height: '30px',
     cursor: 'pointer',
     border: 'solid',
+    borderRadius: '5px',
+    marginRight: '1rem',
   },
   body: {
     flex: '4 4 auto',

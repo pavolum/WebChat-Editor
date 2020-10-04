@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
   ColorPicker,
-
   IColor,
   IColorPickerStyles,
   IColorPickerProps,
@@ -10,7 +9,6 @@ import RbgaSelectorInModal from './rbgaSelectorInModal';
 
 import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
 import { DefaultSelector } from './defaultSelector';
-
 
 const classNames = mergeStyleSets({
   wrapper: { display: 'flex' },
@@ -36,9 +34,8 @@ interface RbgaSelectorProps {
   id: string;
   value: any;
   onChange: (styleElementName: string, value: any) => void;
-  colorValue: string;
-}
 
+}
 
 export const RbgaSelector = (props: RbgaSelectorProps) => {
   const { id, value, onChange,} = props;
@@ -49,7 +46,6 @@ export const RbgaSelector = (props: RbgaSelectorProps) => {
   }, [id, onChange]); 
 
   const [alphaType, setAlphaType] = React.useState<IColorPickerProps['alphaType']>('alpha');
-
 
   return (
     <div className={classNames.parent}>
@@ -71,6 +67,3 @@ export const RbgaSelector = (props: RbgaSelectorProps) => {
       </div>
   );
 };
-
-
-

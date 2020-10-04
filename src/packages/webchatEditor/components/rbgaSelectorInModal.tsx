@@ -6,12 +6,10 @@ import {
   mergeStyleSets,
   FontWeights,
   IDragOptions,
-
   ContextualMenu,
   IconButton,
   IIconProps,
 } from 'office-ui-fabric-react';
-
 
 interface RbgaSelectorInModalProps {
   colorValue: string;
@@ -60,6 +58,8 @@ const contentStyles = mergeStyleSets({
     height: '30px',
     cursor: 'pointer',
     border: 'solid',
+    borderRadius: '5px',
+    marginRight: '1rem',
   },
   body: {
     flex: '4 4 auto',
