@@ -6,8 +6,7 @@ import {
   mergeStyleSets,
   FontWeights,
   IDragOptions,
-  DefaultButton,
-  Toggle,
+
   ContextualMenu,
   IconButton,
   IIconProps,
@@ -15,8 +14,6 @@ import {
 
 
 interface RbgaSelectorInModalProps {
-  updateRootStateVariable: (stateVariableName: string, value: any) => void;
-  displayColorModal: boolean;
   colorValue: string;
 }
 
@@ -26,12 +23,11 @@ const dragOptions: IDragOptions = {
   menu: ContextualMenu,
 };
 const cancelIcon: IIconProps = { iconName: 'Cancel' };
-//props will a child of ColorSelectorInModal
 const RbgaSelectorInModal: React.FunctionComponent<RbgaSelectorInModalProps>  = (props ) => {
   
-  const {updateRootStateVariable, colorValue, displayColorModal} = props;
+  const { colorValue} = props;
 
-  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(displayColorModal);
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false);
   const [isDraggable, { toggle: toggleIsDraggable }] = useBoolean(false);
 
   const titleId = useId('title');
@@ -60,8 +56,8 @@ const contentStyles = mergeStyleSets({
   ],
   currentColorStyles: {
     backgroundColor: `${colorValue}`,
-    width: '24px',
-    height: '24px',
+    width: '30px',
+    height: '30px',
     cursor: 'pointer',
     border: 'solid',
   },
