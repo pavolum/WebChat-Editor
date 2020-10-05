@@ -1,36 +1,31 @@
 import * as React from 'react';
 import {
   ColorPicker,
-  IChoiceGroupOption,
   IColor,
   IColorPickerStyles,
 } from 'office-ui-fabric-react/lib/index';
-import ColorSelectorInModal from './colorSelectorInModal';
+import ColorSelectorInModal from './colorSelectorModal';
 
 import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
 import { DefaultSelector } from './defaultSelector';
-
-const alphaOptions: IChoiceGroupOption[] = [
-  { key: 'alpha', text: 'Alpha' },
-  { key: 'transparency', text: 'Transparency' },
-  { key: 'none', text: 'None' },
-];
+import { Link } from '@fluentui/react';
 
 const classNames = mergeStyleSets({
   wrapper: { display: 'flex' },
-  column2: { marginLeft: 10 },
+  column: { marginRight: '1rem'},
   parent: {
     display: 'flex',
     flexDirection: 'row',
-    height: 'auto',
+    alignItems: 'center',
+    marginRight: '1rem',
   }
 });
 
 const colorPickerStyles: Partial<IColorPickerStyles> = {
   panel: { padding: 12 },
   root: {
-    maxWidth: 352,
-    minWidth: 352,
+    maxWidth: 300,
+    minWidth: 300,
   },
   colorRectangle: { height: 268 },
 };
@@ -41,15 +36,19 @@ interface ColorSelectorProps {
   onChange: (styleElementName: string, value: any) => void;
 }
 
-
 export const ColorSelector = (props: ColorSelectorProps) => {
   const { id, value, onChange,} = props;
-  const [color, setColor] = React.useState(value);
+  const [defaultColor, setDefaultColor] = React.useState(value ? value:'#f5f5f5');
+  const [color, setColor] = React.useState(value ? value:'#f5f5f5');
   const updateColor = React.useCallback((ev: any, colorObj: IColor) =>{
     onChange(id, '#' + colorObj.hex);
     setColor('#' + colorObj.hex);
   }, [id, onChange]); 
 
+  const resetToDefault = React.useCallback((defaultColor: string) =>{
+    onChange(id, defaultColor);
+    setColor(defaultColor);
+  }, [id, onChange]); 
 
   return (
     <div className={classNames.parent}>
@@ -66,10 +65,10 @@ export const ColorSelector = (props: ColorSelectorProps) => {
           }}
           alphaSliderHidden />
       </ColorSelectorInModal>
-      <DefaultSelector id={id} onChange={onChange} value={value}/>
+      <div className={classNames.column}>
+          <DefaultSelector id={id} onChange={onChange} value={value}/>
+      </div>
+      <Link isButton onClick={(e)=>resetToDefault(defaultColor)}>Reset to default.</Link>
       </div>
   );
 };
-
-
-
