@@ -7,6 +7,7 @@ import { genericSingleAction, actionTypes } from "../../Redux/actions";
 import { UISelectorType } from "../../utilities/types";
 import { DefaultSelector } from "./defaultSelector";
 import { mergeStyles } from "@fluentui/react";
+import { DropDownSelector } from "./dropDownSelector";
 
 const UI_selector = mergeStyles(
     {   
@@ -27,6 +28,9 @@ export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProp
 
     const renderSelector = (type: UISelectorType) => {
         switch (type) {
+            case UISelectorType.dropDownSelector:
+                return <DropDownSelector id={id} onChange={onChange} value={value}/> 
+
             case UISelectorType.defaultSelector:
             default:
                 return <DefaultSelector id={id} onChange={onChange} value={value}/> 
