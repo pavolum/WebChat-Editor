@@ -5,21 +5,11 @@ import {
   getTheme,
   mergeStyleSets,
   FontWeights,
-  IDragOptions,
-  DefaultButton,
-  Toggle,
-  ContextualMenu,
   IconButton,
   IIconProps,
 } from 'office-ui-fabric-react';
 import { SwatchColorPicker } from '@fluentui/react';
 
-
-const dragOptions: IDragOptions = {
-  moveMenuItemText: 'Move',
-  closeMenuItemText: 'Close',
-  menu: ContextualMenu,
-};
 const theme = getTheme();
 const contentStyles = mergeStyleSets({
   container: {
@@ -43,9 +33,6 @@ const contentStyles = mergeStyleSets({
   currentColorStyles: {
     cursor: 'pointer',
     marginRight: '1rem',
-    
-
-
   },
   body: {
     flex: '4 4 auto',
@@ -72,7 +59,6 @@ const iconButtonStyles = {
 };
 const cancelIcon: IIconProps = { iconName: 'Cancel' };
 //props will a child of ColorSelectorModal
-
 interface ColorSelectorModalProps {
   colorValue: string;
 }
@@ -81,7 +67,6 @@ const ColorSelectorModal: React.FunctionComponent<ColorSelectorModalProps>  = (p
   const { colorValue} = props;
 
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false);
-  const [isDraggable, { toggle: toggleIsDraggable }] = useBoolean(false);
 
   const titleId = useId('title');
 
@@ -106,7 +91,6 @@ const colorCell = [
             onDismiss={hideModal}
             containerClassName={contentStyles.container}
             isDarkOverlay={false}
-            dragOptions={isDraggable ? dragOptions : undefined}
           >
             <div className={contentStyles.header}>
               <span id={titleId}>Select a color.</span>
@@ -121,7 +105,6 @@ const colorCell = [
             </div>
           </Modal>
     </div>
-    
   );
 };
 
