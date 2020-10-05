@@ -547,7 +547,7 @@ const trascriptOverlayButtonsEntries: CustomizationEntry[] = [
     displayName: "Background Color",
     category: Category.TranscriptOverlayButtons,
     subCategory: SubCategory.ButtonDefault,
-    uiSelectorType: UISelectorType.rbgaSelector,
+    uiSelectorType: UISelectorType.rgbaSelector,
   },
   {
     id: 'newMessagesButtonFontSize',
@@ -561,28 +561,28 @@ const trascriptOverlayButtonsEntries: CustomizationEntry[] = [
     displayName: "Color",
     category: Category.TranscriptOverlayButtons,
     subCategory: SubCategory.ButtonOnFocus,
-    uiSelectorType: UISelectorType.rbgaSelector,
+    uiSelectorType: UISelectorType.rgbaSelector,
   },
   {
     id: 'transcriptOverlayButtonBackgroundOnFocus',
     displayName: "Background Color",
     category: Category.TranscriptOverlayButtons,
     subCategory: SubCategory.ButtonOnFocus,
-    uiSelectorType: UISelectorType.rbgaSelector,
+    uiSelectorType: UISelectorType.rgbaSelector,
   },
   {
     id: 'transcriptOverlayButtonColorOnHover',
     displayName: "Color",
     category: Category.TranscriptOverlayButtons,
     subCategory: SubCategory.ButtonOnHover,
-    uiSelectorType: UISelectorType.rbgaSelector,
+    uiSelectorType: UISelectorType.rgbaSelector,
   },
   {
     id: 'transcriptOverlayButtonBackgroundOnHover',
     displayName: "Background Color",
     category: Category.TranscriptOverlayButtons,
     subCategory: SubCategory.ButtonOnHover,
-    uiSelectorType: UISelectorType.rbgaSelector,
+    uiSelectorType: UISelectorType.rgbaSelector,
   },
 ];
 
