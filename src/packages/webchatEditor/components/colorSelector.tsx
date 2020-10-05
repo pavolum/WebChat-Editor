@@ -4,11 +4,13 @@ import {
   IColor,
   IColorPickerStyles,
 } from 'office-ui-fabric-react/lib/index';
-import ColorSelectorInModal from './colorSelectorModal';
+import { useBoolean } from '@uifabric/react-hooks';
+
+import ColorSelectorModal from './colorSelectorModal';
 
 import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
-import { DefaultSelector } from './defaultSelector';
-import { Link } from '@fluentui/react';
+import { Link, TextField } from '@fluentui/react';
+import { CalloutModal } from './callOutModal';
 
 const classNames = mergeStyleSets({
   wrapper: { display: 'flex' },
@@ -38,11 +40,13 @@ interface ColorSelectorProps {
 
 export const ColorSelector = (props: ColorSelectorProps) => {
   const { id, value, onChange,} = props;
-  const [defaultColor, setDefaultColor] = React.useState(value ? value:'#f5f5f5');
-  const [color, setColor] = React.useState(value ? value:'#f5f5f5');
+  const [defaultColor] = React.useState(value ? value:'#f5f5f5');
+  const [color, setColor] = React.useState(value ? value:'#ffffff');
+  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false);
+
   const updateColor = React.useCallback((ev: any, colorObj: IColor) =>{
-    onChange(id, '#' + colorObj.hex);
-    setColor('#' + colorObj.hex);
+    onChange(id, colorObj.str);
+    setColor(colorObj.str);
   }, [id, onChange]); 
 
   const resetToDefault = React.useCallback((defaultColor: string) =>{
@@ -50,9 +54,26 @@ export const ColorSelector = (props: ColorSelectorProps) => {
     setColor(defaultColor);
   }, [id, onChange]); 
 
+  const checkHex = (hexValue: string | undefined) => {
+    if(hexValue?.match(/[^#abcdefABCDEF0-9]/g) === null){
+    if(hexValue.length === 7 && hexValue[0] === '#'){
+      setColor(hexValue);
+    }
+    if(hexValue[0] === '#' && hexValue.length > 7){
+      return hexValue.slice(0,7);
+    }
+    return hexValue;
+  }
+  else {
+    toggleIsCalloutVisible();
+    return color;
+  }
+    
+  }
+
   return (
     <div className={classNames.parent}>
-      <ColorSelectorInModal colorValue={color} >
+      <ColorSelectorModal colorValue={color} >
         <ColorPicker
           color={color}
           onChange={updateColor}
@@ -64,9 +85,11 @@ export const ColorSelector = (props: ColorSelectorProps) => {
             hueAriaLabel: 'Hue slider: Use left and right arrow keys to change value, hold shift for a larger jump',
           }}
           alphaSliderHidden />
-      </ColorSelectorInModal>
+      </ColorSelectorModal>
       <div className={classNames.column}>
-          <DefaultSelector id={id} onChange={onChange} value={value}/>
+      <CalloutModal id={id} isCalloutVisible={isCalloutVisible} toggleIsCalloutVisible={toggleIsCalloutVisible}>
+          <TextField value={value} id={`${id}-call-out`} onChange={(e: any, newValue?: string) => {onChange(id, checkHex(newValue))}}/>
+      </CalloutModal>
       </div>
       <Link isButton onClick={(e)=>resetToDefault(defaultColor)}>Reset to default.</Link>
       </div>
