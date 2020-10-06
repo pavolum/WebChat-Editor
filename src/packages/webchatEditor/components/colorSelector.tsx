@@ -32,6 +32,8 @@ const colorPickerStyles: Partial<IColorPickerStyles> = {
   colorRectangle: { height: 268 },
 };
 
+const warningMessage = 'Hexadecimal colors must start with a "#" and can only contain 6 total alphanumeric values from [0-9] and [a-f]';
+
 interface ColorSelectorProps {
   id: string;
   value: any;
@@ -55,8 +57,8 @@ export const ColorSelector = (props: ColorSelectorProps) => {
   }, [id, onChange]); 
 
   const checkHex = (hexValue: string | undefined) => {
-    if(hexValue?.match(/[^#abcdefABCDEF0-9]/g) === null){
-    if(hexValue.length === 7 && hexValue[0] === '#'){
+    if(hexValue?.match(/[^#abcdefABCDEF0-9]/g) === null && hexValue[0] === '#' ){
+    if(hexValue.length === 7){
       setColor(hexValue);
     }
     if(hexValue[0] === '#' && hexValue.length > 7){
@@ -68,9 +70,7 @@ export const ColorSelector = (props: ColorSelectorProps) => {
     toggleIsCalloutVisible();
     return color;
   }
-    
   }
-
   return (
     <div className={classNames.parent}>
       <ColorSelectorModal colorValue={color} >
@@ -87,11 +87,11 @@ export const ColorSelector = (props: ColorSelectorProps) => {
           alphaSliderHidden />
       </ColorSelectorModal>
       <div className={classNames.column}>
-      <CalloutModal id={id} isCalloutVisible={isCalloutVisible} toggleIsCalloutVisible={toggleIsCalloutVisible}>
+      <CalloutModal warningMessage={warningMessage} id={id} isCalloutVisible={isCalloutVisible} toggleIsCalloutVisible={toggleIsCalloutVisible}>
           <TextField value={value} id={`${id}-call-out`} onChange={(e: any, newValue?: string) => {onChange(id, checkHex(newValue))}}/>
       </CalloutModal>
       </div>
-      <Link isButton onClick={(e)=>resetToDefault(defaultColor)}>Reset to default.</Link>
+      <Link isButton onClick={()=>resetToDefault(defaultColor)}>Reset to default.</Link>
       </div>
   );
 };

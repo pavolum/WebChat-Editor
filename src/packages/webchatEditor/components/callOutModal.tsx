@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { DefaultButton, Callout, mergeStyleSets } from 'office-ui-fabric-react';
-import { useBoolean, useId } from '@uifabric/react-hooks';
+import { Callout, mergeStyleSets } from 'office-ui-fabric-react';
+import { useId } from '@uifabric/react-hooks';
 
 const styles = mergeStyleSets({
     textArea: {
@@ -22,6 +22,7 @@ const styles = mergeStyleSets({
     id: string;
     isCalloutVisible: boolean;
     toggleIsCalloutVisible: ((ev?: any) => void) | undefined;
+    warningMessage: string;
   }
 
   export const CalloutModal: React.FunctionComponent<CalloutModalProps>= (props) => {
@@ -44,7 +45,7 @@ const styles = mergeStyleSets({
             setInitialFocus
           >
             <div className={styles.header}>
-      Hexadecimal colors can only contain 6 total alphanumeric values from [0-9] and [a-f].
+             {props.warningMessage}
             </div>
           </Callout>
         )}
