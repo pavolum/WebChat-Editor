@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
 import { useId, useBoolean } from '@uifabric/react-hooks';
 import {
   Modal,
@@ -62,7 +62,7 @@ const cancelIcon: IIconProps = { iconName: 'Cancel' };
 interface ColorSelectorModalProps {
   colorValue: string;
 }
-const ColorSelectorModal: React.FunctionComponent<ColorSelectorModalProps>  = (props ) => {
+const ColorSelectorModal: FunctionComponent<ColorSelectorModalProps>  = (props ) => {
   
   const { colorValue} = props;
 

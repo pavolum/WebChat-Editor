@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
+
 import { Callout, mergeStyleSets } from 'office-ui-fabric-react';
 import { useId } from '@uifabric/react-hooks';
 
@@ -25,7 +26,7 @@ const styles = mergeStyleSets({
     warningMessage: string;
   }
 
-  export const CalloutModal: React.FunctionComponent<CalloutModalProps>= (props) => {
+  export const CalloutModal: FunctionComponent<CalloutModalProps>= (props) => {
     const labelId: string = useId('callout-label');
     const descriptionId: string = useId('callout-description');
     return (

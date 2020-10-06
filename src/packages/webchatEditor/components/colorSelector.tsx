@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   ColorPicker,
   IColor,
@@ -40,21 +40,19 @@ interface ColorSelectorProps {
   onChange: (styleElementName: string, value: any) => void;
 }
 
-// TODO: add # prefix to textarea
-
 export const ColorSelector = (props: ColorSelectorProps) => {
   const { id, value, onChange,} = props;
-  const [defaultColor] = React.useState(value ? value:'#f5f5f5');
-  const [color, setColor] = React.useState(value ? value:'#ffffff');
+  const [defaultColor] = useState(value ? value:'#f5f5f5');
+  const [color, setColor] = useState(value ? value:'#ffffff');
   const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false);
   const shiftedValue = value? value.split(''): ['f','5','f','5','f','5',];
         shiftedValue.shift();
-  const updateColor = React.useCallback((ev: any, colorObj: IColor) =>{
+  const updateColor = useCallback((ev: any, colorObj: IColor) =>{
     onChange(id, colorObj.str);
     setColor(colorObj.str);
   }, [id, onChange]); 
 
-  const resetToDefault = React.useCallback((defaultColor: string) =>{
+  const resetToDefault = useCallback((defaultColor: string) =>{
     onChange(id, defaultColor);
     setColor(defaultColor);
   }, [id, onChange]); 
@@ -74,7 +72,7 @@ export const ColorSelector = (props: ColorSelectorProps) => {
     return color;
   }
   }
-  
+
   return (
     <div className={classNames.parent}>
       <ColorSelectorModal colorValue={color} >

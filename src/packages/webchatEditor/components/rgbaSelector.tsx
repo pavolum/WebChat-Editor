@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ColorPicker,
   getColorFromRGBA,
@@ -73,12 +73,12 @@ interface RgbaSelectorProps {
 
 export const RgbaSelector = (props: RgbaSelectorProps) => {
   const { id, value, onChange, } = props;
-  const [color, setColor] = React.useState(initialValue(value));
-  const [defaultColor] = React.useState(value)
+  const [color, setColor] = useState(initialValue(value));
+  const [defaultColor] = useState(value)
   let textFieldValue = value ? value.replace(/[rgba]/g, '') : '(0,0,0,1)'; // sets textFieldValue to (0,0,0,1) if value is undefined
   const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false); // used to initiate warning callout
 
-  const updateColor = React.useCallback((ev: any, colorObj: IColor) => { // IColor holds r,g,b,a, and hex values
+  const updateColor = useCallback((ev: any, colorObj: IColor) => { // IColor holds r,g,b,a, and hex values
     onChange(id, formatHexToRgba(colorObj.r, colorObj.g, colorObj.b, colorObj.a));
     setColor(colorObj.str);
     }, [id, onChange]);
@@ -88,7 +88,7 @@ export const RgbaSelector = (props: RgbaSelectorProps) => {
     setColor(initialValue(defaultColor));
     };
 
-  const [alphaType] = React.useState<IColorPickerProps['alphaType']>('alpha');
+  const [alphaType] = useState<IColorPickerProps['alphaType']>('alpha');
 
   const checkRGBA = (rgbaValue: string | undefined) => {
     if (rgbaValue?.match(/[^( ).,0-9]/g) === null && rgbaValue?.match(/,/g)?.length===3) { // ensures users do not delete commas and provide valid values
@@ -129,4 +129,3 @@ export const RgbaSelector = (props: RgbaSelectorProps) => {
     </div>
   );
 };
-
