@@ -58,7 +58,7 @@ const iconButtonStyles = {
   },
 };
 const cancelIcon: IIconProps = { iconName: 'Cancel' };
-//props will a child of ColorSelectorModal
+
 interface ColorSelectorModalProps {
   colorValue: string;
 }
