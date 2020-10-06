@@ -122,9 +122,11 @@ export const RgbaSelector = (props: RgbaSelectorProps) => {
           }}
         />
       </ColorSelectorModal>
+      <div className={classNames.column}>
       <CalloutModal warningMessage={warningMessage} id={id} isCalloutVisible={isCalloutVisible} toggleIsCalloutVisible={toggleIsCalloutVisible}>
         <TextField id={`${id}-call-out`} value={textFieldValue} onChange={(e: any, newValue?: string) => { onChange(id, checkRGBA(newValue)) }} prefix={'rgba'} />
       </CalloutModal>
+      </div>
       <Link onClick={() => resetToDefault()} isButton>Reset to default.</Link>
     </div>
   );
