@@ -40,12 +40,15 @@ interface ColorSelectorProps {
   onChange: (styleElementName: string, value: any) => void;
 }
 
+// TODO: add # prefix to textarea
+
 export const ColorSelector = (props: ColorSelectorProps) => {
   const { id, value, onChange,} = props;
   const [defaultColor] = React.useState(value ? value:'#f5f5f5');
   const [color, setColor] = React.useState(value ? value:'#ffffff');
   const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false);
-
+  const shiftedValue = value? value.split(''): ['f','5','f','5','f','5',];
+        shiftedValue.shift();
   const updateColor = React.useCallback((ev: any, colorObj: IColor) =>{
     onChange(id, colorObj.str);
     setColor(colorObj.str);
@@ -57,20 +60,21 @@ export const ColorSelector = (props: ColorSelectorProps) => {
   }, [id, onChange]); 
 
   const checkHex = (hexValue: string | undefined) => {
-    if(hexValue?.match(/[^#abcdefABCDEF0-9]/g) === null && hexValue[0] === '#' ){
-    if(hexValue.length === 7){
-      setColor(hexValue);
+    if(hexValue?.match(/[^abcdefABCDEF0-9]/g) === null ){
+    if(hexValue.length === 6){
+      setColor('#' + hexValue);
     }
-    if(hexValue[0] === '#' && hexValue.length > 7){
-      return hexValue.slice(0,7);
+    if( hexValue.length > 6){
+      return '#' + hexValue.slice(0,6);
     }
-    return hexValue;
+    return '#' + hexValue;
   }
   else {
     toggleIsCalloutVisible();
     return color;
   }
   }
+  
   return (
     <div className={classNames.parent}>
       <ColorSelectorModal colorValue={color} >
@@ -86,12 +90,13 @@ export const ColorSelector = (props: ColorSelectorProps) => {
           }}
           alphaSliderHidden />
       </ColorSelectorModal>
-      <div className={classNames.column}>
-      <CalloutModal warningMessage={warningMessage} id={id} isCalloutVisible={isCalloutVisible} toggleIsCalloutVisible={toggleIsCalloutVisible}>
-          <TextField value={value} id={`${id}-call-out`} onChange={(e: any, newValue?: string) => {onChange(id, checkHex(newValue))}}/>
-      </CalloutModal>
-      </div>
-      <Link isButton onClick={()=>resetToDefault(defaultColor)}>Reset to default.</Link>
-      </div>
+
+          <div className={classNames.column}>
+              <CalloutModal warningMessage={warningMessage} id={id} isCalloutVisible={isCalloutVisible} toggleIsCalloutVisible={toggleIsCalloutVisible}>
+                  <TextField value={shiftedValue.join('')} id={`${id}-call-out`} prefix='#' onChange={(e: any, newValue?: string) => {onChange(id, checkHex(newValue))}}/>
+              </CalloutModal>
+          </div>
+          <Link isButton onClick={()=>resetToDefault(defaultColor)}>Reset to default.</Link>
+    </div>
   );
 };
