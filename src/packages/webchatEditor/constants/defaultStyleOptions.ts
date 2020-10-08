@@ -5,6 +5,7 @@ function fontFamily(fonts: any) {
   const DEFAULT_ACCENT = '#0063B1';
   const DEFAULT_SUBTLE = '#767676'; // With contrast 4.5:1 to #ffffff
   const PADDING_REGULAR = 10;
+  const defaultUndefinedColor = '#f5f5f5';
   
 export const defaultStyleOptions = {
     // Color and paddings
@@ -26,10 +27,10 @@ export const defaultStyleOptions = {
     // Avatar
     avatarBorderRadius: '50%',
     avatarSize: 40,
-    botAvatarBackgroundColor: undefined, // defaults to accent color
+    botAvatarBackgroundColor: defaultUndefinedColor, // defaults to accent color
     botAvatarImage: '',
     botAvatarInitials: '',
-    userAvatarBackgroundColor: undefined, // defaults to accent color
+    userAvatarBackgroundColor: defaultUndefinedColor, // defaults to accent color
     userAvatarImage: '',
     userAvatarInitials: '',
   
@@ -75,11 +76,11 @@ export const defaultStyleOptions = {
     hideUploadButton: false,
     microphoneButtonColorOnDictate: '#F33',
     sendBoxBackground: '#ffffff',
-    sendBoxButtonColor: undefined, // defaults to subtle
+    sendBoxButtonColor: defaultUndefinedColor, // defaults to subtle
     sendBoxButtonColorOnDisabled: '#CCC',
     sendBoxButtonColorOnFocus: '#333',
     sendBoxButtonColorOnHover: '#333',
-    sendBoxDisabledTextColor: undefined, // defaults to subtle
+    sendBoxDisabledTextColor: defaultUndefinedColor, // defaults to subtle
     sendBoxHeight: 40,
     sendBoxMaxHeight: 200,
     sendBoxTextColor: '#000000',
@@ -88,7 +89,7 @@ export const defaultStyleOptions = {
     sendBoxBorderLeft: '',
     sendBoxBorderRight: '',
     sendBoxBorderTop: 'solid 1px #E6E6E6',
-    sendBoxPlaceholderColor: undefined, // defaults to subtle
+    sendBoxPlaceholderColor: defaultUndefinedColor, // defaults to subtle
     sendBoxTextWrap: false,
   
     // Visually show spoken text
@@ -97,16 +98,16 @@ export const defaultStyleOptions = {
     // Suggested actions
     suggestedActionBackground: '#ffffff',
     suggestedActionBorder: undefined, // split into 3, null
-    suggestedActionBorderColor: undefined, // defaults to accent
+    suggestedActionBorderColor: 'f5f5f5', // defaults to accent
     suggestedActionBorderRadius: 0,
     suggestedActionBorderStyle: 'solid',
     suggestedActionBorderWidth: 2,
-    suggestedActionDisabledBackground: undefined, // defaults to suggestedActionBackground
+    suggestedActionDisabledBackground: defaultUndefinedColor, // defaults to suggestedActionBackground
     suggestedActionDisabledBorder: null,
     suggestedActionDisabledBorderColor: '#E6E6E6',
     suggestedActionDisabledBorderStyle: 'solid',
     suggestedActionDisabledBorderWidth: 2,
-    suggestedActionDisabledTextColor: undefined, // defaults to subtle
+    suggestedActionDisabledTextColor: defaultUndefinedColor, // defaults to subtle
     suggestedActionHeight: 40,
     suggestedActionImageHeight: 20,
     suggestedActionLayout: 'carousel', // either 'carousel' or 'stacked'
@@ -120,7 +121,7 @@ export const defaultStyleOptions = {
     groupTimestamp: true,
     sendTimeout: 20000,
     sendTimeoutForAttachments: 120000,
-    timestampColor: undefined, // defaults to subtle
+    timestampColor: defaultUndefinedColor, // defaults to subtle
     timestampFormat: 'relative', // 'absolute'
   
     // Transcript overlay buttons (e.g. carousel and suggested action flippers, scroll to bottom, etc.)
@@ -129,8 +130,8 @@ export const defaultStyleOptions = {
     transcriptOverlayButtonBackgroundOnFocus: 'rgba(0, 0, 0, .8)',
     transcriptOverlayButtonBackgroundOnHover: 'rgba(0, 0, 0, .8)',
     transcriptOverlayButtonColor: '#ffffff',
-    transcriptOverlayButtonColorOnFocus: undefined, // defaults to transcriptOverlayButtonColor
-    transcriptOverlayButtonColorOnHover: undefined, // defaults to transcriptOverlayButtonColor
+    transcriptOverlayButtonColorOnFocus: defaultUndefinedColor, // defaults to transcriptOverlayButtonColor
+    transcriptOverlayButtonColorOnHover: defaultUndefinedColor, // defaults to transcriptOverlayButtonColor
   
     // Video
     videoHeight: 270, // based on bubbleMaxWidth, 480 / 16 * 9 = 270
