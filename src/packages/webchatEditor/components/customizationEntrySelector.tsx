@@ -6,6 +6,10 @@ import { CustomizationEntry, IAppState, WebChatStyleOption } from "../../Redux/r
 import { genericSingleAction, actionTypes } from "../../Redux/actions";
 import { UISelectorType } from "../../utilities/types";
 import { DefaultSelector } from "./defaultSelector";
+import { BooleanSelector } from "./booleanSelector";
+import { IntegerSelector } from "./integerSelector";
+import { PercentageSelector } from "./percentageSelector";
+
 import { mergeStyles } from "@fluentui/react";
 import { DropDownSelector } from "./dropDownSelector";
 
@@ -28,6 +32,12 @@ export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProp
 
     const renderSelector = (type: UISelectorType) => {
         switch (type) {
+            case UISelectorType.booleanSelector:
+                return <BooleanSelector id={id} onChange={onChange} value={value}/>
+            case UISelectorType.integerSelector:
+                return <IntegerSelector id={id} onChange={onChange} value={value}/>
+                case UISelectorType.percentageSelector:
+                    return <PercentageSelector id={id} onChange={onChange} value={value}/>
             case UISelectorType.dropDownSelector:
                 return <DropDownSelector id={id} onChange={onChange} value={value}/> 
 
