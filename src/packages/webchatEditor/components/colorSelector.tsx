@@ -1,24 +1,25 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
   ColorPicker,
   IColor,
   IColorPickerStyles,
 } from 'office-ui-fabric-react/lib/index';
 import { useBoolean } from '@uifabric/react-hooks';
+import { debounce } from 'underscore';
+
 
 import ColorSelectorModal from './colorSelectorModal';
 
 import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
-import { Link, TextField } from '@fluentui/react';
+import { TextField } from '@fluentui/react';
 
 const classNames = mergeStyleSets({
-  wrapper: { display: 'flex' },
-  column: { marginRight: '1rem' },
+  column: { marginTop: '16px' },
   parent: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     marginRight: '1rem',
+    height: '100px',
   }
 });
 
@@ -48,9 +49,8 @@ const removeHash = (colorCode: string) => {
 
 export const ColorSelector = (props: ColorSelectorProps) => {
   const { id, value, onChange } = props;
-  const [isErrorVisible, { toggle: toggleIsErrorVisible }] = useBoolean(false);
-  // sus af
   const [textFieldValue, setTextFieldValue] = useState(removeHash(value));
+  const [isErrorMessageOpen, { setTrue: showErrorMessage, setFalse: hideErrorMessage }] = useBoolean(false);
 
   const isValid = (newValue?: string): boolean => {
     if (newValue && (/^#([0-9A-F]{3}){1,2}$/i).test(`#${newValue}`)) {
@@ -58,25 +58,33 @@ export const ColorSelector = (props: ColorSelectorProps) => {
     }
     return false;
   }
-
-
+  
   const colorFormOnChange = (newValue?: string) => {
     if (isValid(newValue)) {
       setTextFieldValue(newValue as string);
       onChange(id, `#${newValue}`);
-      if (isErrorVisible) {
-        toggleIsErrorVisible();
+      if (isErrorMessageOpen) {
+        hideErrorMessage();
       }
     }
     else {
       if (newValue !== null && newValue !== undefined) {
         setTextFieldValue(newValue);
-        if (!isErrorVisible) {
-          toggleIsErrorVisible();
+        if (!isErrorMessageOpen) {
+          showErrorMessage();
         }
       }
     }
   }
+
+  const updateColor = (colorObj: IColor) => { 
+    onChange(id, colorObj.str);
+    hideErrorMessage();
+    setTextFieldValue(colorObj.hex);
+    }
+
+    const debounceUpdateColor = debounce(updateColor,150)
+
 
   return (
     <div className={classNames.parent}>
@@ -84,8 +92,7 @@ export const ColorSelector = (props: ColorSelectorProps) => {
         <ColorPicker
           color={value}
           onChange={(e: any, color: IColor) => {
-            onChange(id, color.str);
-            setTextFieldValue(removeHash(color.str));
+          debounceUpdateColor(color);
           }}
           showPreview
           styles={colorPickerStyles}
@@ -98,7 +105,7 @@ export const ColorSelector = (props: ColorSelectorProps) => {
       </ColorSelectorModal>
 
       <div className={classNames.column}>
-        <TextField value={textFieldValue} id={`${id}-call-out`} errorMessage={isErrorVisible ? warningMessage : ''} prefix='#' onChange={(e: any, newValue?: string) => { colorFormOnChange(newValue) }} />
+        <TextField value={textFieldValue} errorMessage={isErrorMessageOpen ? warningMessage : ''} prefix='#' onChange={(e: any, newValue?: string) => { colorFormOnChange(newValue) }} />
       </div>
     </div>
   );

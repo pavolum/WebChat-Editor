@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import {
   ColorPicker,
   getColorFromRGBA,
@@ -6,21 +6,20 @@ import {
   IColorPickerStyles,
 } from 'office-ui-fabric-react/lib/index';
 import { useBoolean } from '@uifabric/react-hooks';
-
+import { debounce } from 'underscore';
 import ColorSelectorModal from './colorSelectorModal';
 
 import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
-import { IColorPickerProps, Link, TextField } from '@fluentui/react';
-import { CalloutModal } from './callOutModal';
+import { IColorPickerProps, TextField } from '@fluentui/react';
 
 const classNames = mergeStyleSets({
-  wrapper: { display: 'flex' },
-  column: { marginRight: '1rem' },
+  column: { marginTop: '16px' },
   parent: {
+    height: '100px',
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     marginRight: '1rem',
+    
   }
 });
 
@@ -32,37 +31,31 @@ const colorPickerStyles: Partial<IColorPickerStyles> = {
   },
   colorRectangle: { height: 268 },
 };
-// return (getColorFromRGBA({r: rgba[0], g: rgba[1], b: rgba[2], a: rgba[3]})).str; 
-
 
 const fullColorHex = (rgba: number[]) => {
   return (getColorFromRGBA({r: rgba[0], g: rgba[1], b: rgba[2], a: rgba[3]})).str;
 };
 
 const parseRGBStringValues = (rgbaValue: string) => {
-  return (rgbaValue.replace(/[rgba()]/g, '')).split(',');  // returns string[] expected = ['255','255','255', '.02']
+  return (rgbaValue.replace(/[rgba()]/g, '')).split(',');
 }
 
-const parseRGBValues = (rgbaValue: string) => { // removes non valid chars, then parses int from string values while mapping rgba array
+const parseRGBValues = (rgbaValue: string) : number[] => { 
   return parseRGBStringValues(rgbaValue).map((stringValue) => {
-        if (!isNaN(parseInt(stringValue))) { // spaces will return NaN
+        if (!isNaN(parseInt(stringValue))) { 
           return parseInt(stringValue);
         }
           else if(parseFloat(stringValue)){
-            return parseFloat(stringValue) * 100;
+            return (parseFloat(stringValue) * 100);
           }
-            else { return 0; }; // will fill in empty spaces with 0
+            else { return 0; }; 
   })
 }
 
-const formatHexToRgba = (r: number, g: number, b: number, a: number | undefined) => {
-  return `rgba(${r},${g},${b},${a})`;
+const getHexColorFromRgba = (rgbaValue: string) => {
+  return (fullColorHex(parseRGBValues(rgbaValue)));  // Converts Rgba to HEX
 }
 
-const initialValue = (rgbaValue: string) => {
-  return (fullColorHex(parseRGBValues(rgbaValue ? rgbaValue : 'rgba(0,0,0, 1')));  // Converts Rgba to HEX
-
-}
 const warningMessage: string = 'Rgba values must contain only numeric values [0-9] which are separated by commas [ , ].'
 
 interface RgbaSelectorProps {
@@ -73,45 +66,55 @@ interface RgbaSelectorProps {
 
 export const RgbaSelector = (props: RgbaSelectorProps) => {
   const { id, value, onChange, } = props;
-  const [color, setColor] = useState(initialValue(value));
-  const [defaultColor] = useState(value)
-  let textFieldValue = value ? value.replace(/[rgba]/g, '') : '(0,0,0,1)'; // sets textFieldValue to (0,0,0,1) if value is undefined
-  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false); // used to initiate warning callout
+  const [textFieldValue, setTextFieldValue] = useState(value.replace(/[rgba()]/g, ''));
+  const [isErrorMessageOpen, { setTrue: showErrorMessage, setFalse: hideErrorMessage }] = useBoolean(false);
 
-  const updateColor = useCallback((ev: any, colorObj: IColor) => { // IColor holds r,g,b,a, and hex values
-    onChange(id, formatHexToRgba(colorObj.r, colorObj.g, colorObj.b, colorObj.a));
-    setColor(colorObj.str);
-    }, [id, onChange]);
 
-  const resetToDefault = () => {
-    onChange(id, defaultColor);
-    setColor(initialValue(defaultColor));
-    };
+  const updateColor = (colorObj: IColor) => { 
+    hideErrorMessage();
+    onChange(id,`rgba(${colorObj.r}, ${colorObj.g}, ${colorObj.b}, ${colorObj.a})`);
+    setTextFieldValue(`${colorObj.r}, ${colorObj.g}, ${colorObj.b}, ${colorObj.a}`);
+    }
+  
+    const debounceUpdateColor = debounce(updateColor,150);
 
+    const isValid = (newValue?: string): boolean => {
+      if (newValue?.match(/[^. ,0-9]/g) === null && newValue?.match(/[,]/g)?.length===3) {
+        const rgbaArray = parseRGBValues(newValue);
+          const result = rgbaArray.reduce((acc, value)=>(
+              acc && (value <= 255)), true)
+          return result;
+      }
+      return false;
+    }
   const [alphaType] = useState<IColorPickerProps['alphaType']>('alpha');
 
-  const checkRGBA = (rgbaValue: string | undefined) => {
-    if (rgbaValue?.match(/[^( ).,0-9]/g) === null && rgbaValue?.match(/,/g)?.length===3) { // ensures users do not delete commas and provide valid values
-      let getRGB = parseRGBValues(rgbaValue);
-      if (getRGB) {
-        onChange(id, formatHexToRgba(getRGB[0], getRGB[1], getRGB[2], getRGB[3]))
-        setColor(fullColorHex(getRGB));
+  const colorFormOnChange = (newValue?: string) => {
+    if (isValid(newValue)) {
+      setTextFieldValue(newValue as string);
+      onChange(id, `rgba(${newValue})`)
+      if (isErrorMessageOpen) {
+        hideErrorMessage();
       }
     }
     else {
-      toggleIsCalloutVisible();
-      setColor(color)
-      return value;
+      if (newValue !== null && newValue !== undefined) {
+        setTextFieldValue(newValue);
+        if (!isErrorMessageOpen) {
+          showErrorMessage();
+        }
+      }
     }
-    return rgbaValue;
   }
 
   return (
     <div className={classNames.parent}>
-      <ColorSelectorModal colorValue={color}>
+      <ColorSelectorModal colorValue={getHexColorFromRgba(value)}>
         <ColorPicker
-          color={color}
-          onChange={updateColor}
+          color={getHexColorFromRgba(value)}
+          onChange={(e: any, color: IColor) => {
+          debounceUpdateColor(color);
+          }}
           showPreview
           alphaType={alphaType}
           styles={colorPickerStyles}
@@ -123,11 +126,8 @@ export const RgbaSelector = (props: RgbaSelectorProps) => {
         />
       </ColorSelectorModal>
       <div className={classNames.column}>
-      <CalloutModal warningMessage={warningMessage} id={id} isCalloutVisible={isCalloutVisible} toggleIsCalloutVisible={toggleIsCalloutVisible}>
-        <TextField id={`${id}-call-out`} value={textFieldValue} onChange={(e: any, newValue?: string) => { onChange(id, checkRGBA(newValue)) }} prefix={'rgba'} />
-      </CalloutModal>
+        <TextField errorMessage={isErrorMessageOpen ? warningMessage : ''} value={textFieldValue} onChange={(e: any, newValue?: string) => {colorFormOnChange(newValue)}} prefix={'rgba('} suffix={')'} />
       </div>
-      <Link onClick={() => resetToDefault()} isButton>Reset to default.</Link>
     </div>
   );
 };
