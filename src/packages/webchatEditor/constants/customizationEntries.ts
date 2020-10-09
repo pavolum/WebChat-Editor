@@ -380,6 +380,7 @@ const suggestedActionsEntries: CustomizationEntry[] = [
     subCategory: SubCategory.Border,
     uiSelectorType: UISelectorType.defaultSelector,
   },
+  // suggestedActionColor is breaking application
   {
     id: 'suggestedActionColor',
     displayName: 'Color',
@@ -415,6 +416,7 @@ const suggestedActionsEntries: CustomizationEntry[] = [
     subCategory: SubCategory.BorderDisabled,
     uiSelectorType: UISelectorType.defaultSelector,
   },
+  //suggestedActionDisabledColor is breaking
   {
     id: 'suggestedActionDisabledColor',
     displayName: 'Color',

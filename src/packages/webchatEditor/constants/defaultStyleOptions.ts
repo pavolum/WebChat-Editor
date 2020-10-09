@@ -5,7 +5,7 @@ function fontFamily(fonts: any) {
   const DEFAULT_ACCENT = '#0063B1';
   const DEFAULT_SUBTLE = '#767676'; // With contrast 4.5:1 to #ffffff
   const PADDING_REGULAR = 10;
-  const DEFAULT_UNDEFINED_COLOR = '#f5f5f5';
+  const DEFAULT_UNDEFINED_COLOR = '#000000';
   const DEFAULT_UNDEFINED_RGBA = 'rgba(255,255,255, 50)';
   
 export const defaultStyleOptions = {
@@ -97,9 +97,11 @@ export const defaultStyleOptions = {
     showSpokenText: false,
   
     // Suggested actions
+    suggestedActionDisabledColor: '#ffffff',
+    suggestedActionColor: '#ffffff',
     suggestedActionBackground: '#ffffff',
     suggestedActionBorder: undefined, // split into 3, null
-    suggestedActionBorderColor: 'f5f5f5', // defaults to accent
+    suggestedActionBorderColor: '#f5f5f5', // defaults to accent
     suggestedActionBorderRadius: 0,
     suggestedActionBorderStyle: 'solid',
     suggestedActionBorderWidth: 2,
