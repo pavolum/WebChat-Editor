@@ -11,6 +11,7 @@ import { IntegerSelector } from "./integerSelector";
 import { PercentageSelector } from "./percentageSelector";
 
 import { mergeStyles } from "@fluentui/react";
+import { DropDownSelector } from "./dropDownSelector";
 
 const UI_selector = mergeStyles(
     {   
@@ -37,6 +38,9 @@ export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProp
                 return <IntegerSelector id={id} onChange={onChange} value={value}/>
                 case UISelectorType.percentageSelector:
                     return <PercentageSelector id={id} onChange={onChange} value={value}/>
+            case UISelectorType.dropDownSelector:
+                return <DropDownSelector id={id} onChange={onChange} value={value}/> 
+
             case UISelectorType.defaultSelector:
             default:
                 return <DefaultSelector id={id} onChange={onChange} value={value}/> 
