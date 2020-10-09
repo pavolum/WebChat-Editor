@@ -30,6 +30,8 @@ interface StateProps {
     activeCategory: Category;
     customizationEntries: CustomizationEntry[];
     styleOptions: WebChatStyleOption;
+    displayColorModal: boolean;
+    colorValue: string;
 }
 
 interface DispatchProps {
@@ -37,10 +39,12 @@ interface DispatchProps {
 }
 
 interface Props {
+    updateRootStateVariable: (stateVariableName: string, value: any) => void,
 
 }
 
 type PropsType = StateProps & DispatchProps & Props;
+
 
 export class ConfigurationEntryViewer extends React.Component<PropsType> {
     constructor(props: PropsType) {
@@ -73,7 +77,7 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
     }
 
     getStyleOptionValue = (key: any) => {
-        const { styleOptions } = this.props;
+        const { styleOptions} = this.props;
         return this.prop(styleOptions, key);
     };
 
@@ -82,7 +86,7 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
     }
     
     mapSubCategoriesObjectToReactElements = (subCategoryObject: ISubCategoryObject) => {
-        const { styleOptions, updateStyleElement } = this.props;
+        const { styleOptions, updateStyleElement, updateRootStateVariable, colorValue, displayColorModal } = this.props;
         return (
             <div>
                 {Object.keys(subCategoryObject).map((key) => {
@@ -93,6 +97,7 @@ export class ConfigurationEntryViewer extends React.Component<PropsType> {
                                             entry={entry}
                                             value={this.getStyleOptionValue(entry.id)}
                                             onChange={updateStyleElement}
+
                                         />
                                     ))}
                                 </div>
@@ -129,6 +134,8 @@ const mapStateToProps = (state: IAppState, ownProps: Props): StateProps => ({
     activeCategory: state.activeCategory,
     customizationEntries: state.customizationEntries,
     styleOptions: state.styleOptions,
+    colorValue: state.colorValue,
+    displayColorModal: state.displayColorModal,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): DispatchProps => ({

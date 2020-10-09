@@ -9,6 +9,8 @@ import { DefaultSelector } from "./defaultSelector";
 import { BooleanSelector } from "./booleanSelector";
 import { IntegerSelector } from "./integerSelector";
 import { PercentageSelector } from "./percentageSelector";
+import { ColorSelector } from "./colorSelector";
+import {RgbaSelector} from './rgbaSelector'
 
 import { mergeStyles } from "@fluentui/react";
 import { DropDownSelector } from "./dropDownSelector";
@@ -27,7 +29,7 @@ interface CustomizationEntrySelectorProps {
 }
 
 export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProps) => {
-    const { entry, value, onChange } = props;
+    const { entry, value, onChange, } = props;
     const { displayName, id } = entry;
 
     const renderSelector = (type: UISelectorType) => {
@@ -36,11 +38,14 @@ export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProp
                 return <BooleanSelector id={id} onChange={onChange} value={value}/>
             case UISelectorType.integerSelector:
                 return <IntegerSelector id={id} onChange={onChange} value={value}/>
-                case UISelectorType.percentageSelector:
-                    return <PercentageSelector id={id} onChange={onChange} value={value}/>
+            case UISelectorType.percentageSelector:
+                return <PercentageSelector id={id} onChange={onChange} value={value}/>
             case UISelectorType.dropDownSelector:
                 return <DropDownSelector id={id} onChange={onChange} value={value}/> 
-
+            case UISelectorType.colorSelector:
+                return <ColorSelector id={id} onChange={onChange} value={value}/>
+            case UISelectorType.rgbaSelector:
+                return <RgbaSelector id={id} onChange={onChange} value={value}/>
             case UISelectorType.defaultSelector:
             default:
                 return <DefaultSelector id={id} onChange={onChange} value={value}/> 

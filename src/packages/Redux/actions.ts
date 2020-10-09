@@ -9,6 +9,9 @@ export enum actionTypes {
 
   // creation Experience action types
   UPDATE_ROOT_CREATION_STATE_VARIABlE = 'UPDATE_ROOT_CREATION_STATE_VARIABlE',
+
+  // open close modal
+  UPDATE_MODAL_OPTIONS= 'UPDATE_MODAL_OPTIONS',
 }
 
 export function genericSingleAction<T>(actionName: actionTypes, property?: T): GenericAction<actionTypes, T> {

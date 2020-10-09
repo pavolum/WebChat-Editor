@@ -44,7 +44,8 @@ interface CustomizationEntrySubCategoryProps {
 }
 
 export const CustomizationEntrySubCategory = (props: CustomizationEntrySubCategoryProps) => {
-    const { entries, subCategory, styleOptions, updateStyleElement } = props;
+    const { entries, subCategory, styleOptions, updateStyleElement,
+} = props;
     const [isCollapsed, setIsCollapsed] = useState(true);
 
     useEffect(() => {

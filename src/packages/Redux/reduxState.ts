@@ -12,13 +12,17 @@ export interface CustomizationEntry {
 }
 
 export interface IAppState {
-    // Active catefory to be rendered in middle pane
+    // Active category to be rendered in middle pane
     activeCategory: Category,
     // Value of UI elements that determine style option value stored here
     customizationEntries: CustomizationEntry[],
     // Value of current style options stored here
     styleOptions: WebChatStyleOption;
     jsonIsInvalid: boolean;
+    // Closes Modal for color switch when user selects other color selectors. This will fixes having a modal open for each colorSelector
+    displayColorModal: boolean;
+    colorValue: string;
+    
 }
 
 // TODO: Figure out way to get strongly types style Options obj that maps to https://github.com/microsoft/BotFramework-WebChat/blob/master/packages/component/src/Styles/defaultStyleOptions.js
@@ -149,5 +153,7 @@ export const initialAppState: IAppState = {
     activeCategory: Category.ColorAndPaddings,
     customizationEntries: customizationEntries,
     styleOptions: defaultStyleOptions,
-    jsonIsInvalid: false
+    jsonIsInvalid: false,
+    displayColorModal: false,
+    colorValue: '#ffffff',
 }

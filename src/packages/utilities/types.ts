@@ -51,5 +51,5 @@ export enum UISelectorType {
     dropDownSelector = 'dropDownSelector',
     integerSelector = 'integerSelector',
     percentageSelector = 'percentageSelector',
-    rbgaSelector = 'rbgaSelector',
+    rgbaSelector = 'rgbaSelector',
 }

@@ -76,7 +76,7 @@ interface StateProps {
 
 interface DispatchProps {
     updateStyleElement: (styleElementName: string, value: any) => void,
-    updateRootStateVariable: (stateVariableName: string, value: any) => void
+    updateRootStateVariable: (stateVariableName: string, value: any) => void,
 }
 
 interface Props {
@@ -122,7 +122,7 @@ export class WebChatEditor extends React.Component<PropsType> {
                         </Stack>
                     </div>
                     <div className={`ms-Grid-col ms-sm6 ms-md6 ms-lg6 ${configurationEntriesContainer}`}>
-                        <ConfigurationEntryViewer />
+                        <ConfigurationEntryViewer updateRootStateVariable={this.props.updateRootStateVariable}/>
                     </ div>
                     <div className="ms-Grid-col ms-sm4 ms-md4 ms-lg4">
                         <WebChat />
@@ -145,7 +145,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): DispatchProps => ({
     },
     updateRootStateVariable: (stateVariableName: string, value: any) => {
         dispatch(genericSingleAction<any>(actionTypes.UPDATE_ROOT_WEBCHAT_STATE_VARIABlE, {propertyName: stateVariableName, value: value}));
-    },
+    }
 });
 
 export default connect(
