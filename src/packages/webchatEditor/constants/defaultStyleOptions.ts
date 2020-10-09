@@ -45,7 +45,7 @@ export const defaultStyleOptions = {
     bubbleFromUserBorderRadius: 2,
     bubbleFromUserBorderStyle: 'solid',
     bubbleFromUserBorderWidth: 1,
-    bubbleFromUserNubOffset: 'bottom',
+    bubbleFromUserNubOffset: 0,
     bubbleFromUserNubSize: 0,
     bubbleFromUserTextColor: 'Black',
     bubbleImageHeight: 240,
@@ -187,3 +187,4 @@ export const defaultStyleOptions = {
     toastWarnBackgroundColor: '#FFF4CE',
     toastWarnColor: '#3B3A39'
   }
+  
