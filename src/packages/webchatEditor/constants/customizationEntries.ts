@@ -55,7 +55,7 @@ const fontEntries: CustomizationEntry[] = [
   { id: 'messageActivityWordBreak',        
     displayName: 'Message Activity Word Break',        
     category: Category.Fonts,
-    uiSelectorType: UISelectorType.defaultSelector,
+    uiSelectorType: UISelectorType.dropDownSelector,
   },
 ];
 
@@ -71,12 +71,6 @@ const avatarEntries: CustomizationEntry[] = [
     category: Category.Avatar,
     subCategory: SubCategory.AvatarSettings,
     uiSelectorType: UISelectorType.integerSelector,
-  },
-  { id: 'showAvatarInGroup',        
-    displayName: 'Show Avatar In Group',        
-    category: Category.Avatar,
-    subCategory: SubCategory.AvatarSettings,
-    uiSelectorType: UISelectorType.dropDownSelector,
   },
   { id: 'botAvatarBackgroundColor',        
     displayName: 'Background Color',        
@@ -506,7 +500,7 @@ const timestampEntries: CustomizationEntry[] = [
     id: 'groupTimestamp',
     displayName: "Group Timestamp",
     category: Category.Timestamp,
-    uiSelectorType: UISelectorType.dropDownSelector,
+    uiSelectorType: UISelectorType.booleanSelector,
   },
   {
     id: 'sendTimeout',
