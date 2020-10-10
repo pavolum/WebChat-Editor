@@ -17,7 +17,7 @@ import { mergeStyles, mergeStyleSets } from '@uifabric/merge-styles';
 import { ColorSelector } from "./colorSelector";
 import { RgbaSelector } from "./rgbaSelector";
 import { customizationEntries } from "../constants/customizationEntries";
-import { filter, object } from "underscore";
+import { filter, object, unique } from "underscore";
 
 ////////////////// Styling //////////////////
 const resetButtonClassName = mergeStyles({
@@ -44,6 +44,7 @@ interface Props {
 interface LocalState {
     textValue: string,
     foundErrors: string[],
+    uniqueErrors: Set<string>,
 }
 
 type PropsType = StateProps & DispatchProps & Props;
@@ -52,12 +53,22 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
     constructor(props: PropsType) {
         super(props);
         this.state = ({textValue: JSON.stringify(this.props.currentStyleOptions, null, 4),
-        foundErrors: []})
+        foundErrors: [],
+        uniqueErrors: new Set(),
+    })
     }
 
     checkColor = (id: string, index: number) => {
         if ((/^#([0-9A-F]{3}){1,2}$/i).test(`${id}`)) {
             if(this.state.foundErrors.includes(customizationEntries[index].id)){
+                console.log('before', this.state.uniqueErrors)
+                this.state.uniqueErrors.delete(customizationEntries[index].id)
+                console.log('after', this.state.uniqueErrors)
+
+                this.setState({
+                    uniqueErrors: this.state.uniqueErrors,
+                })
+                this.filterErrors();
             }
             return true
         } else {
@@ -65,7 +76,6 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
             this.setState({
                 foundErrors: [...this.state.foundErrors, customizationEntries[index].id]
             })    
-            console.log(this.state.foundErrors)
         }
         return false;
     }
@@ -163,18 +173,28 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         this.setState({textValue: JSON.stringify(defaultStyleOptions, null, 4)});
         this.props.updateRootStateVariable('styleOptions', defaultStyleOptions);
     }
-    private filterArray = () => {
-        return this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index);
-}
-    
-    render() {
+
+    private filterErrors = () => {
+
+        const result = this.state.foundErrors.filter((word,index )=> word[index+1] !== word[index]);
+       
+        console.log(result)
+        // this.setState({
+        //     uniqueErrors: [...this.state.uniqueErrors,  this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index) ]
+        //     ,
+        // }) 
+        console.log(' this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index)',  this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index))
+        return result.map((error: string)=>(
+                <li>{error}</li>
+                ))}
+
+
+render(){
 
         return (
             <div>
                 {this.renderErrorBanner()}
-                {this.filterArray().map(error=>(
-                    <li>{error}</li>
-                ))}
+                {this.filterErrors()}
                 <TextField onChange={(event: any, newValue?: string) => this.onJsonChange(event, newValue)} label="" multiline rows={40} value={this.state.textValue} />
                 <PrimaryButton className={resetButtonClassName} onClick={(event: any) => {this.resetToDefault(event)}} text="Reset to default" /> n
             </div>
