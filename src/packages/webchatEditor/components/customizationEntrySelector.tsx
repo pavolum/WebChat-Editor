@@ -40,13 +40,10 @@ export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProp
                 return <IntegerSelector id={id} onChange={onChange} value={value}/>
             case UISelectorType.percentageSelector:
                 return <PercentageSelector id={id} onChange={onChange} value={value}/>
-<<<<<<< HEAD
-=======
-            case UISelectorType.dropDownSelector:
-                return <DropDownSelector id={id} onChange={onChange} value={value}/> 
->>>>>>> 005112f327e8ef9c192a1ff3864051e5bcb16d52
             case UISelectorType.colorSelector:
                 return <ColorSelector id={id} onChange={onChange} value={value}/>
+                case UISelectorType.dropDownSelector:
+                    return <DropDownSelector id={id} onChange={onChange} value={value}/>
             case UISelectorType.rgbaSelector:
                 return <RgbaSelector id={id} onChange={onChange} value={value}/>
             case UISelectorType.defaultSelector:

@@ -43,8 +43,8 @@ interface Props {
 
 interface LocalState {
     textValue: string,
-    foundErrors: string[],
-    uniqueErrors: Set<string>,
+    foundErrors: Set<String>,
+    uniqueErrors: String[],
 }
 
 type PropsType = StateProps & DispatchProps & Props;
@@ -53,29 +53,26 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
     constructor(props: PropsType) {
         super(props);
         this.state = ({textValue: JSON.stringify(this.props.currentStyleOptions, null, 4),
-        foundErrors: [],
-        uniqueErrors: new Set(),
+        foundErrors: new Set(),
+        uniqueErrors: []
     })
     }
 
     checkColor = (id: string, index: number) => {
         if ((/^#([0-9A-F]{3}){1,2}$/i).test(`${id}`)) {
-            if(this.state.foundErrors.includes(customizationEntries[index].id)){
-                console.log('before', this.state.uniqueErrors)
-                this.state.uniqueErrors.delete(customizationEntries[index].id)
-                console.log('after', this.state.uniqueErrors)
+            console.log('here',this.state.foundErrors.delete(customizationEntries[index].id))
+            if(this.state.foundErrors.delete(customizationEntries[index].id)){
 
-                this.setState({
-                    uniqueErrors: this.state.uniqueErrors,
-                })
-                this.filterErrors();
             }
             return true
         } else {
-            if(!this.state.foundErrors.includes(customizationEntries[index].id)){
+            if(!this.state.foundErrors.delete(customizationEntries[index].id)){
+                var addNewError = this.state.foundErrors.add(customizationEntries[index].id)
             this.setState({
-                foundErrors: [...this.state.foundErrors, customizationEntries[index].id]
-            })    
+                foundErrors: addNewError,
+                uniqueErrors: [...Array.from(this.state.foundErrors), customizationEntries[index].id ],
+            })      
+            console.log('this.state.foundErrors', this.state.uniqueErrors)
         }
         return false;
     }
@@ -94,14 +91,16 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
     checkRGBA = (id: string, index: number) => {
         
         if((/rgba?\((\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*)((?:,\s*[0-9.]*\s*)?)\)/g).test(id)){
-            if(this.state.foundErrors.includes(customizationEntries[index].id)){
-
+            if(this.state.foundErrors.delete(customizationEntries[index].id)){
             }
             return true;
         } else {
-            if(!this.state.foundErrors.includes(customizationEntries[index].id)){
+            if(!this.state.foundErrors.delete(customizationEntries[index].id)){
+                let addNewError = this.state.foundErrors.add(customizationEntries[index].id)
+                // let errorsArray = this.state.uniqueErrors.push(Array.from(addNewError))
             this.setState({
-                foundErrors: [...this.state.foundErrors, customizationEntries[index].id]
+                foundErrors: addNewError,
+    
             })    
             console.log(this.state.foundErrors)
         }
@@ -174,27 +173,29 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         this.props.updateRootStateVariable('styleOptions', defaultStyleOptions);
     }
 
-    private filterErrors = () => {
+    // private filterErrors = () => {
 
-        const result = this.state.foundErrors.filter((word,index )=> word[index+1] !== word[index]);
+        // const result = this.state.foundErrors.filter((word,index )=> word[index+1] !== word[index]);
        
-        console.log(result)
+        // console.log(result)
         // this.setState({
         //     uniqueErrors: [...this.state.uniqueErrors,  this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index) ]
         //     ,
         // }) 
-        console.log(' this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index)',  this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index))
-        return result.map((error: string)=>(
-                <li>{error}</li>
-                ))}
+        // console.log(' this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index)',  this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index))
+        // return result.map((error: string)=>(
+        //         <li>{error}</li>
+        //         ))}
 
 
 render(){
-
+    let errors = Array.from(this.state.uniqueErrors)
+    //.forEach(error=>(<li>{error}</li>))
+    console.log(errors)
         return (
             <div>
                 {this.renderErrorBanner()}
-                {this.filterErrors()}
+        {}
                 <TextField onChange={(event: any, newValue?: string) => this.onJsonChange(event, newValue)} label="" multiline rows={40} value={this.state.textValue} />
                 <PrimaryButton className={resetButtonClassName} onClick={(event: any) => {this.resetToDefault(event)}} text="Reset to default" /> n
             </div>
