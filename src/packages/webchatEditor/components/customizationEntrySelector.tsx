@@ -37,12 +37,12 @@ export const CustomizationEntrySelector = (props: CustomizationEntrySelectorProp
                 return <BooleanSelector id={id} onChange={onChange} value={value}/>
             case UISelectorType.integerSelector:
                 return <IntegerSelector id={id} onChange={onChange} value={value}/>
-                case UISelectorType.percentageSelector:
-                    return <PercentageSelector id={id} onChange={onChange} value={value}/>
-                    case UISelectorType.colorSelector:
-                        return <ColorSelector id={id} onChange={onChange} value={value}/>
-                    case UISelectorType.rgbaSelector:
-                        return <RgbaSelector id={id} onChange={onChange} value={value}/>
+            case UISelectorType.percentageSelector:
+                return <PercentageSelector id={id} onChange={onChange} value={value}/>
+            case UISelectorType.colorSelector:
+                return <ColorSelector id={id} onChange={onChange} value={value}/>
+            case UISelectorType.rgbaSelector:
+                return <RgbaSelector id={id} onChange={onChange} value={value}/>
             case UISelectorType.defaultSelector:
             default:
                 return <DefaultSelector id={id} onChange={onChange} value={value}/> 
