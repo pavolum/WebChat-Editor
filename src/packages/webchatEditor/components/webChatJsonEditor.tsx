@@ -10,7 +10,7 @@ import {
     MessageBarType,
 
 } from 'office-ui-fabric-react';
-import { PrimaryButton} from 'office-ui-fabric-react';
+import { PrimaryButton } from 'office-ui-fabric-react';
 import { mergeStyleSets } from '@uifabric/merge-styles';
 
 import { customizationEntries } from "../constants/customizationEntries";
@@ -21,18 +21,17 @@ const classes = mergeStyleSets({
         float: 'right',
         marginTop: '20px',
     },
-    messageBar: {
-        maxHeight: '125px',
+    listItem :{
     },
     errors: {
         display: 'flex',
         flexDirection: 'column',
         flexWrap: 'wrap',
-        width: '100%',
-        maxHeight: '100px',
-        paddingTop: '10px',
+        justifyContent: 'space-between',
+        maxHeight: '60px',
+        paddingTop: '5px',
     },
-    textField : {
+    textField: {
     }
 });
 
@@ -75,9 +74,11 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
             var newStyleOptions: WebChatStyleOption
             try {
                 newStyleOptions = JSON.parse(newJson);
-                this.validateJSON(newStyleOptions);
+                let invalidAttributesInJson = this.validateJSON(newStyleOptions);
+                if (!invalidAttributesInJson) {
+                    this.props.updateRootStateVariable('styleOptions', newStyleOptions);
+                }
                 this.props.updateRootStateVariable('jsonIsInvalid', false);
-                this.props.updateRootStateVariable('styleOptions', newStyleOptions);
             }
             catch {
                 this.props.updateRootStateVariable('jsonIsInvalid', true);
@@ -89,7 +90,6 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         if (this.props.jsonIsInvalid) {
             return (
                 <MessageBar
-                    className={classes.messageBar}
                     messageBarType={MessageBarType.error}
                     isMultiline={false}
                 >
@@ -99,11 +99,16 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
     }
 
     private resetToDefault = (event: any) => {
-        this.setState({ textValue: JSON.stringify(defaultStyleOptions, null, 4) });
+        this.state.uniqueErrors.clear();
+        this.setState({ 
+            textValue: JSON.stringify(defaultStyleOptions, null, 4),
+            uniqueErrors: this.state.uniqueErrors,
+        });
+        this.props.updateRootStateVariable('jsonIsInvalid', false);
         this.props.updateRootStateVariable('styleOptions', defaultStyleOptions);
     }
 
-     private removeError = (index: number) => {
+    private removeError = (index: number) => {
         const { uniqueErrors } = this.state;
         uniqueErrors.delete(customizationEntries[index].id)
         this.setState({
@@ -162,32 +167,58 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
             return this.addError(index)
         }
     }
-//TODO: complete dropdown validation
+    //TODO: complete dropdown validation
 
     checkDropDown = (id: string, index: number) => {
         console.log(id)
     }
 
-//TODO: complete default validation
+    //TODO: complete default validation
 
     checkDefault = (id: string, index: number) => {
         console.log(id)
 
     }
 
-    private validateJSON = (newJson: any,) => {
+    private validateJSON = (newJson: any): boolean => {
+        let invalidAttributesInJson = false;
         this.props.customizationEntries.map((entry, index) => {
             switch (entry.uiSelectorType) {
                 case 'colorSelector':
-                    return this.checkColor(newJson[entry.id], index);
+                    if (this.checkColor(newJson[entry.id], index)){
+                        return true;
+                    } else {
+                        invalidAttributesInJson = true;
+                        return false;
+                    }
                 case 'booleanSelector':
-                    return this.checkBoolean(newJson[entry.id], index);
+                    if (this.checkBoolean(newJson[entry.id], index)){
+                        return true;
+                    } else {
+                        invalidAttributesInJson = true;
+                        return false;
+                    }
                 case 'rgbaSelector':
-                    return this.checkRGBA(newJson[entry.id], index);
+                    if (this.checkRGBA(newJson[entry.id], index)){
+                        return true;
+                    } else {
+                        invalidAttributesInJson = true;
+                        return false;
+                    }
                 case 'integerSelector':
-                    return this.checkInt(newJson[entry.id], index);
+                    if (this.checkInt(newJson[entry.id], index)){
+                        return true;
+                    } else {
+                        invalidAttributesInJson = true;
+                        return false;
+                    }
                 case 'percentageSelector':
-                    return this.checkPercentage(newJson[entry.id], index);
+                    if (this.checkPercentage(newJson[entry.id], index)){
+                        return true;
+                    } else {
+                        invalidAttributesInJson = true;
+                        return false;
+                    }
                 // return true;
                 case 'defaultSelector':
                     // return this.checkDefault(newJson[entry.id], index);
@@ -198,8 +229,9 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
                 default:
                     return true;
             }
-
         });
+        return invalidAttributesInJson;
+
     }
 
     render() {
@@ -210,19 +242,18 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
                 {
                     newArr.length ?
                         <MessageBar
-                            className={classes.messageBar}
                             messageBarType={MessageBarType.error}
                             isMultiline={true}
-                        >
-                                The following id's may have incorrect values. Please correct before proceeding
+                        > 
+                            The following id's may have incorrect values. Please correct before proceeding
                             <div className={classes.errors}>
-                            {newArr.map(error => (<li>{error}</li>))}
+                                {newArr.map(error => (<li className={classes.listItem}>{error}</li>))}
                             </div>
                         </MessageBar>
                         :
-                        <> </>
+                        null
                 }
-                <TextField className={classes.textField} onChange={(event: any, newValue?: string) => this.onJsonChange(event, newValue)} label="" multiline rows={40} value={this.state.textValue} />
+                <TextField className={classes.textField} onChange={(event: any, newValue?: string) => this.onJsonChange(event, newValue)} label="" multiline rows={35} value={this.state.textValue} />
                 <PrimaryButton className={classes.resetButtonClassName} onClick={(event: any) => { this.resetToDefault(event) }} text="Reset to default" />
             </div>
         );

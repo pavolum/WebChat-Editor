@@ -49,6 +49,13 @@ const headerContainer = mergeStyles(
     }
 );
 
+
+const pivotHeader = mergeStyles(
+    {
+        marginTop: '15px'
+    }
+);
+
 const editorContainer = mergeStyles(
     {
         padding: '33px',
@@ -119,14 +126,14 @@ export class WebChatEditor extends React.Component<PropsType> {
                 <div className={`ms-Grid-row ${editorContainer}`}>
                     <div className="ms-Grid-col ms-sm8 ms-md8 ms-lg8">
                         <Pivot aria-label="Large Link Size Pivot Example">
-                            <PivotItem headerText="GUI">
+                            <PivotItem className={pivotHeader} headerText="GUI">
                                 <div>
-                                    <div className="ms-Grid-col ms-sm2 ms-md2 ms-lg2">
+                                    <div className="ms-Grid-col ms-sm4 ms-md4 ms-lg4">
                                         <Stack tokens={stackTokens}>
                                             {this.RenderCategories()}
                                         </Stack>
                                     </div>
-                                    <div className={`ms-Grid-col ms-sm6 ms-md6 ms-lg6 ${configurationEntriesContainer}`}>
+                                    <div className={`ms-Grid-col ms-sm8 ms-md8 ms-lg8 ${configurationEntriesContainer}`}>
                                         <ConfigurationEntryViewer updateRootStateVariable={this.props.updateRootStateVariable} />
                                     </ div>
                                 </div>
