@@ -20,20 +20,16 @@ const styles = mergeStyleSets({
   });
   
   interface CalloutModalProps {
-    id: string;
-    isCalloutVisible: boolean;
+    isCalloutVisible: Boolean;
     toggleIsCalloutVisible: ((ev?: any) => void) | undefined;
-    warningMessage: string;
   }
 
   export const CalloutModal: FunctionComponent<CalloutModalProps>= (props) => {
     const labelId: string = useId('callout-label');
     const descriptionId: string = useId('callout-description');
+    console.log(props.isCalloutVisible)
     return (
       <>
-        <div className={styles.textArea}>
-        {props.children}
-        </div>
         {props.isCalloutVisible && (
           <Callout
             className={styles.callout}
@@ -41,13 +37,11 @@ const styles = mergeStyleSets({
             ariaDescribedBy={descriptionId}
             role="alertdialog"
             gapSpace={0}
-            target={`#${props.id}-call-out`}
+            target="#json-editor-parent"
             onDismiss={props.toggleIsCalloutVisible}
             setInitialFocus
           >
-            <div className={styles.header}>
-             {props.warningMessage}
-            </div>
+            {props.children}
           </Callout>
         )}
       </>

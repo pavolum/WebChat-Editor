@@ -18,6 +18,7 @@ import { ColorSelector } from "./colorSelector";
 import { RgbaSelector } from "./rgbaSelector";
 import { customizationEntries } from "../constants/customizationEntries";
 import { filter, object, unique } from "underscore";
+import { CalloutModal } from "./callOutModal";
 
 ////////////////// Styling //////////////////
 const resetButtonClassName = mergeStyles({
@@ -43,8 +44,9 @@ interface Props {
 
 interface LocalState {
     textValue: string,
-    foundErrors: Set<String>,
-    uniqueErrors: String[],
+    uniqueErrors: Set<String>,
+    isCalloutVisible: Boolean,
+
 }
 
 type PropsType = StateProps & DispatchProps & Props;
@@ -53,30 +55,49 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
     constructor(props: PropsType) {
         super(props);
         this.state = ({textValue: JSON.stringify(this.props.currentStyleOptions, null, 4),
-        foundErrors: new Set(),
-        uniqueErrors: []
+        uniqueErrors: new Set(),
+        isCalloutVisible: false,
     })
     }
 
     checkColor = (id: string, index: number) => {
+        const {uniqueErrors} = this.state;
         if ((/^#([0-9A-F]{3}){1,2}$/i).test(`${id}`)) {
-            console.log('here',this.state.foundErrors.delete(customizationEntries[index].id))
-            if(this.state.foundErrors.delete(customizationEntries[index].id)){
-
-            }
-            return true
+            this.state.uniqueErrors.delete(customizationEntries[index].id)
+                this.setState({
+                    uniqueErrors: uniqueErrors
+                })
+            return true;
         } else {
-            if(!this.state.foundErrors.delete(customizationEntries[index].id)){
-                var addNewError = this.state.foundErrors.add(customizationEntries[index].id)
+            if(!uniqueErrors.has(customizationEntries[index].id)){
+                var addNewError = uniqueErrors.add(customizationEntries[index].id)
             this.setState({
-                foundErrors: addNewError,
-                uniqueErrors: [...Array.from(this.state.foundErrors), customizationEntries[index].id ],
+                uniqueErrors: addNewError,
             })      
-            console.log('this.state.foundErrors', this.state.uniqueErrors)
         }
         return false;
     }
     }
+
+    checkRGBA = (id: string, index: number) => {
+        const {uniqueErrors} = this.state;
+        if((/rgba?\((\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*)((?:,\s*[0-9.]*\s*)?)\)/g).test(id)){
+            this.state.uniqueErrors.delete(customizationEntries[index].id)
+            this.setState({
+                uniqueErrors: uniqueErrors
+            })
+        return true;
+    } else {
+        if(!uniqueErrors.has(customizationEntries[index].id)){
+            var addNewError = uniqueErrors.add(customizationEntries[index].id)
+        this.setState({
+            uniqueErrors: addNewError,
+        })      
+    }
+    return false;
+}
+}
+
     checkInt = (id: string) => {
         console.log(id)
 
@@ -88,25 +109,7 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
     checkDropDown = (id: string) => {
         console.log(id)
     }
-    checkRGBA = (id: string, index: number) => {
-        
-        if((/rgba?\((\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*)((?:,\s*[0-9.]*\s*)?)\)/g).test(id)){
-            if(this.state.foundErrors.delete(customizationEntries[index].id)){
-            }
-            return true;
-        } else {
-            if(!this.state.foundErrors.delete(customizationEntries[index].id)){
-                let addNewError = this.state.foundErrors.add(customizationEntries[index].id)
-                // let errorsArray = this.state.uniqueErrors.push(Array.from(addNewError))
-            this.setState({
-                foundErrors: addNewError,
-    
-            })    
-            console.log(this.state.foundErrors)
-        }
-        return false;
-    }
-    }
+
     checkPercentage = (id: string) => {
         console.log(id)
 
@@ -137,16 +140,15 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
            
         });
 
-
     }
 
     private onJsonChange = (event: any, newJson?: string) => {
         if (newJson) {
             this.setState({textValue: newJson});
             var newStyleOptions: WebChatStyleOption
+            newStyleOptions = JSON.parse(newJson);
+            this.validateJSON(newStyleOptions);
             try {
-                newStyleOptions = JSON.parse(newJson);
-                this.validateJSON(newStyleOptions);
                 this.props.updateRootStateVariable('jsonIsInvalid', false);
                 this.props.updateRootStateVariable('styleOptions', newStyleOptions);
             }
@@ -172,32 +174,28 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         this.setState({textValue: JSON.stringify(defaultStyleOptions, null, 4)});
         this.props.updateRootStateVariable('styleOptions', defaultStyleOptions);
     }
-
-    // private filterErrors = () => {
-
-        // const result = this.state.foundErrors.filter((word,index )=> word[index+1] !== word[index]);
-       
-        // console.log(result)
-        // this.setState({
-        //     uniqueErrors: [...this.state.uniqueErrors,  this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index) ]
-        //     ,
-        // }) 
-        // console.log(' this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index)',  this.state.foundErrors.filter((value, index) => this.state.foundErrors.indexOf(value) === index))
-        // return result.map((error: string)=>(
-        //         <li>{error}</li>
-        //         ))}
+    public toggleCallout = () => {
+        this.setState({
+            isCalloutVisible: !this.state.isCalloutVisible,
+        })
+        console.log(this.state.isCalloutVisible)
+    }
 
 
 render(){
-    let errors = Array.from(this.state.uniqueErrors)
-    //.forEach(error=>(<li>{error}</li>))
-    console.log(errors)
+    let newArr = Array.from(this.state.uniqueErrors)
         return (
             <div>
                 {this.renderErrorBanner()}
-        {}
-                <TextField onChange={(event: any, newValue?: string) => this.onJsonChange(event, newValue)} label="" multiline rows={40} value={this.state.textValue} />
-                <PrimaryButton className={resetButtonClassName} onClick={(event: any) => {this.resetToDefault(event)}} text="Reset to default" /> n
+                <MessageBar
+                  messageBarType={MessageBarType.error}
+                  isMultiline={true}
+                  dismissButtonAriaLabel="Close"
+                >
+                {newArr.map(error=>(<li>{error}</li>))}
+                </MessageBar>
+                <TextField  onChange={(event: any, newValue?: string) => this.onJsonChange(event, newValue)} label="" multiline rows={40} value={this.state.textValue} />
+                <PrimaryButton  className={resetButtonClassName} onClick={(event: any) => {this.resetToDefault(event)}} text="Reset to default" /> n
             </div>
         );
     }
