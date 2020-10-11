@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import { CustomizationEntry, IAppState, WebChatStyleOption } from "../../Redux/reduxState";
 import { connect } from "react-redux";
 import { actionTypes, genericSingleAction } from "../../Redux/actions";
@@ -7,18 +6,14 @@ import { Dispatch, AnyAction } from 'redux';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { defaultStyleOptions } from "../constants/defaultStyleOptions";
 import {
-    Link,
     MessageBar,
     MessageBarType,
 
 } from 'office-ui-fabric-react';
-import { DefaultButton, PrimaryButton, Stack, IStackTokens } from 'office-ui-fabric-react';
+import { PrimaryButton} from 'office-ui-fabric-react';
 import { mergeStyleSets } from '@uifabric/merge-styles';
-import { ColorSelector } from "./colorSelector";
-import { RgbaSelector } from "./rgbaSelector";
+
 import { customizationEntries } from "../constants/customizationEntries";
-import { filter, object, unique } from "underscore";
-import { CalloutModal } from "./callOutModal";
 
 ////////////////// Styling //////////////////
 const classes = mergeStyleSets({
@@ -65,16 +60,18 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
     }
 
     removeError = (index: number) => {
-        this.state.uniqueErrors.delete(customizationEntries[index].id)
+        const { uniqueErrors } = this.state;
+        uniqueErrors.delete(customizationEntries[index].id)
         this.setState({
-            uniqueErrors: this.state.uniqueErrors
+            uniqueErrors: uniqueErrors
         })
         return true;
     }
 
     addError = (index: number) => {
-        if (!this.state.uniqueErrors.has(customizationEntries[index].id)) {
-            var addNewError = this.state.uniqueErrors.add(customizationEntries[index].id)
+        const { uniqueErrors } = this.state;
+        if (!uniqueErrors.has(customizationEntries[index].id)) {
+            var addNewError = uniqueErrors.add(customizationEntries[index].id)
             this.setState({
                 uniqueErrors: addNewError,
             })
@@ -97,7 +94,7 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
             return this.addError(index)
         }
     }
-
+//TODO: complete integer validation
     checkInt = (id: number, index: number) => {
         if (typeof id === 'number') {
             return this.removeError(index);
@@ -105,6 +102,7 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
             return this.addError(index)
         }
     }
+//TODO: complete boolean validation
 
     checkBoolean = (id: string, index: number) => {
         if (typeof id === 'boolean') {
@@ -113,6 +111,7 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
             return this.addError(index)
         }
     }
+//TODO: complete dropdown validation
 
     checkDropDown = (id: string, index: number) => {
         console.log(id)
@@ -125,6 +124,7 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
             return this.addError(index)
         }
     }
+//TODO: complete default validation
 
     checkDefault = (id: string, index: number) => {
         console.log(id)
@@ -149,7 +149,8 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
                     // return this.checkDefault(newJson[entry.id], index);
                     return true;
                 case 'dropDownSelector':
-                    return this.checkDropDown(newJson[entry.id], index);
+                    // return this.checkDropDown(newJson[entry.id], index);
+                    return true;
                 default:
                     return true;
             }
