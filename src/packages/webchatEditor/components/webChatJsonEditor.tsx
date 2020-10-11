@@ -59,106 +59,6 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         })
     }
 
-    removeError = (index: number) => {
-        const { uniqueErrors } = this.state;
-        uniqueErrors.delete(customizationEntries[index].id)
-        this.setState({
-            uniqueErrors: uniqueErrors
-        })
-        return true;
-    }
-
-    addError = (index: number) => {
-        const { uniqueErrors } = this.state;
-        if (!uniqueErrors.has(customizationEntries[index].id)) {
-            var addNewError = uniqueErrors.add(customizationEntries[index].id)
-            this.setState({
-                uniqueErrors: addNewError,
-            })
-        }
-        return false;
-    }
-
-    checkColor = (id: string, index: number) => {
-        if ((/^#([0-9A-F]{3}){1,2}$/i).test(`${id}`)) {
-            return this.removeError(index);
-        } else {
-            return this.addError(index)
-        }
-    }
-
-    checkRGBA = (id: string, index: number) => {
-        if ((/rgba?\((\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*)((?:,\s*[0-9.]*\s*)?)\)/g).test(id)) {
-            return this.removeError(index);
-        } else {
-            return this.addError(index)
-        }
-    }
-//TODO: complete integer validation
-    checkInt = (id: number, index: number) => {
-        if (typeof id === 'number') {
-            return this.removeError(index);
-        } else {
-            return this.addError(index)
-        }
-    }
-//TODO: complete boolean validation
-
-    checkBoolean = (id: string, index: number) => {
-        if (typeof id === 'boolean') {
-            return this.removeError(index);
-        } else {
-            return this.addError(index)
-        }
-    }
-//TODO: complete dropdown validation
-
-    checkDropDown = (id: string, index: number) => {
-        console.log(id)
-    }
-
-    checkPercentage = (id: string, index: number) => {
-        if ((/^[0]*?(?<Percentage>[1-9][0-9]?|100)%?$/i).test(id)) {
-            return this.removeError(index);
-        } else {
-            return this.addError(index)
-        }
-    }
-//TODO: complete default validation
-
-    checkDefault = (id: string, index: number) => {
-        console.log(id)
-
-    }
-
-    private validateJSON = (newJson: any,) => {
-        this.props.customizationEntries.map((entry, index) => {
-            switch (entry.uiSelectorType) {
-                case 'colorSelector':
-                    return this.checkColor(newJson[entry.id], index);
-                case 'booleanSelector':
-                    return this.checkBoolean(newJson[entry.id], index);
-                case 'rgbaSelector':
-                    return this.checkRGBA(newJson[entry.id], index);
-                case 'integerSelector':
-                    return this.checkInt(newJson[entry.id], index);
-                case 'percentageSelector':
-                    return this.checkPercentage(newJson[entry.id], index);
-                // return true;
-                case 'defaultSelector':
-                    // return this.checkDefault(newJson[entry.id], index);
-                    return true;
-                case 'dropDownSelector':
-                    // return this.checkDropDown(newJson[entry.id], index);
-                    return true;
-                default:
-                    return true;
-            }
-
-        });
-
-    }
-
     private onJsonChange = (event: any, newJson?: string) => {
         if (newJson) {
             this.setState({ textValue: newJson });
@@ -191,6 +91,105 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
     private resetToDefault = (event: any) => {
         this.setState({ textValue: JSON.stringify(defaultStyleOptions, null, 4) });
         this.props.updateRootStateVariable('styleOptions', defaultStyleOptions);
+    }
+
+     private removeError = (index: number) => {
+        const { uniqueErrors } = this.state;
+        uniqueErrors.delete(customizationEntries[index].id)
+        this.setState({
+            uniqueErrors: uniqueErrors
+        })
+        return true;
+    }
+
+    private addError = (index: number) => {
+        const { uniqueErrors } = this.state;
+        if (!uniqueErrors.has(customizationEntries[index].id)) {
+            var addNewError = uniqueErrors.add(customizationEntries[index].id)
+            this.setState({
+                uniqueErrors: addNewError,
+            })
+        }
+        return false;
+    }
+
+    private checkColor = (id: string, index: number) => {
+        if ((/^#([0-9A-F]{3}){1,2}$/i).test(`${id}`)) {
+            return this.removeError(index);
+        } else {
+            return this.addError(index)
+        }
+    }
+
+    private checkRGBA = (id: string, index: number) => {
+        if ((/rgba?\((\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*)((?:,\s*[0-9.]*\s*)?)\)/g).test(id)) {
+            return this.removeError(index);
+        } else {
+            return this.addError(index)
+        }
+    }
+
+    private checkInt = (id: number, index: number) => {
+        if (typeof id === 'number') {
+            return this.removeError(index);
+        } else {
+            return this.addError(index)
+        }
+    }
+
+    private checkBoolean = (id: string, index: number) => {
+        if (typeof id === 'boolean') {
+            return this.removeError(index);
+        } else {
+            return this.addError(index)
+        }
+    }
+
+    private checkPercentage = (id: string, index: number) => {
+        if ((/^[0]*?(?<Percentage>[1-9][0-9]?|100)%?$/i).test(id)) {
+            return this.removeError(index);
+        } else {
+            return this.addError(index)
+        }
+    }
+//TODO: complete dropdown validation
+
+    checkDropDown = (id: string, index: number) => {
+        console.log(id)
+    }
+
+//TODO: complete default validation
+
+    checkDefault = (id: string, index: number) => {
+        console.log(id)
+
+    }
+
+    private validateJSON = (newJson: any,) => {
+        this.props.customizationEntries.map((entry, index) => {
+            switch (entry.uiSelectorType) {
+                case 'colorSelector':
+                    return this.checkColor(newJson[entry.id], index);
+                case 'booleanSelector':
+                    return this.checkBoolean(newJson[entry.id], index);
+                case 'rgbaSelector':
+                    return this.checkRGBA(newJson[entry.id], index);
+                case 'integerSelector':
+                    return this.checkInt(newJson[entry.id], index);
+                case 'percentageSelector':
+                    return this.checkPercentage(newJson[entry.id], index);
+                // return true;
+                case 'defaultSelector':
+                    // return this.checkDefault(newJson[entry.id], index);
+                    return true;
+                case 'dropDownSelector':
+                    // return this.checkDropDown(newJson[entry.id], index);
+                    return true;
+                default:
+                    return true;
+            }
+
+        });
     }
 
     render() {
