@@ -45,7 +45,6 @@ interface Props {
 interface LocalState {
     textValue: string,
     uniqueErrors: Set<String>,
-    isCalloutVisible: Boolean,
 
 }
 
@@ -56,65 +55,72 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         super(props);
         this.state = ({textValue: JSON.stringify(this.props.currentStyleOptions, null, 4),
         uniqueErrors: new Set(),
-        isCalloutVisible: false,
     })
     }
 
-    checkColor = (id: string, index: number) => {
-        const {uniqueErrors} = this.state;
-        if ((/^#([0-9A-F]{3}){1,2}$/i).test(`${id}`)) {
-            this.state.uniqueErrors.delete(customizationEntries[index].id)
-                this.setState({
-                    uniqueErrors: uniqueErrors
-                })
-            return true;
-        } else {
-            if(!uniqueErrors.has(customizationEntries[index].id)){
-                var addNewError = uniqueErrors.add(customizationEntries[index].id)
-            this.setState({
-                uniqueErrors: addNewError,
-            })      
-        }
-        return false;
-    }
+    removeError = (index: number) => {
+        this.state.uniqueErrors.delete(customizationEntries[index].id)
+        this.setState({
+            uniqueErrors: this.state.uniqueErrors
+        })
+    return true;
     }
 
-    checkRGBA = (id: string, index: number) => {
-        const {uniqueErrors} = this.state;
-        if((/rgba?\((\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*)((?:,\s*[0-9.]*\s*)?)\)/g).test(id)){
-            this.state.uniqueErrors.delete(customizationEntries[index].id)
-            this.setState({
-                uniqueErrors: uniqueErrors
-            })
-        return true;
-    } else {
-        if(!uniqueErrors.has(customizationEntries[index].id)){
-            var addNewError = uniqueErrors.add(customizationEntries[index].id)
+    addError = (index: number) => {
+        if(!this.state.uniqueErrors.has(customizationEntries[index].id)){
+            var addNewError = this.state.uniqueErrors.add(customizationEntries[index].id)
         this.setState({
             uniqueErrors: addNewError,
         })      
     }
     return false;
-}
-}
-
-    checkInt = (id: string) => {
-        console.log(id)
-
-    }
-    checkBoolean = (id: string) => {
-        console.log(id)
-
-    }
-    checkDropDown = (id: string) => {
-        console.log(id)
     }
 
-    checkPercentage = (id: string) => {
-        console.log(id)
-
+    checkColor = (id: string, index: number) => {
+        if ((/^#([0-9A-F]{3}){1,2}$/i).test(`${id}`)) {
+            return this.removeError(index);
+        } else {
+            return this.addError(index)
     }
-    checkDefault = (id: string) => {
+    }
+
+    checkRGBA = (id: string, index: number) => {
+        if((/rgba?\((\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*)((?:,\s*[0-9.]*\s*)?)\)/g).test(id)){
+            return this.removeError(index);
+        } else {
+            return this.addError(index)
+    }
+    }
+
+    checkInt = (id: number, index: number) => {
+        if(typeof id === 'number'){
+            return this.removeError(index);
+        } else {
+            return this.addError(index)
+    }
+    }
+
+    checkBoolean = (id: string, index: number) => {
+        if(typeof id === 'boolean'){
+            return this.removeError(index);
+        } else {
+            return this.addError(index)
+    }
+    }
+
+    checkDropDown = (id: string, index: number) => {
+        console.log(id)
+    }
+
+    checkPercentage = (id: string, index: number) => {
+        if((/^[0]*?(?<Percentage>[1-9][0-9]?|100)%?$/i).test(id)){
+            return this.removeError(index);
+        } else {
+            return this.addError(index)
+    }
+    }
+
+    checkDefault = (id: string, index: number) => {
         console.log(id)
 
     }
@@ -125,15 +131,19 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         case 'colorSelector':
             return  this.checkColor(newJson[entry.id], index);
         case 'booleanSelector':
-            return true ;
+            return this.checkBoolean(newJson[entry.id], index);
         case 'rgbaSelector':
             return  this.checkRGBA(newJson[entry.id], index);
+            case 'integerSelector':
+                return  this.checkInt(newJson[entry.id], index);
         case 'percentageSelector':
-            return true;
+            return this.checkPercentage(newJson[entry.id], index);
+            // return true;
         case 'defaultSelector':
+            // return this.checkDefault(newJson[entry.id], index);
             return true;
         case 'dropDownSelector':
-            return true;
+            return this.checkDropDown(newJson[entry.id], index);
             default:
             return true;
            }
@@ -146,9 +156,9 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         if (newJson) {
             this.setState({textValue: newJson});
             var newStyleOptions: WebChatStyleOption
-            newStyleOptions = JSON.parse(newJson);
-            this.validateJSON(newStyleOptions);
             try {
+                newStyleOptions = JSON.parse(newJson);
+                this.validateJSON(newStyleOptions);
                 this.props.updateRootStateVariable('jsonIsInvalid', false);
                 this.props.updateRootStateVariable('styleOptions', newStyleOptions);
             }
@@ -174,13 +184,6 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         this.setState({textValue: JSON.stringify(defaultStyleOptions, null, 4)});
         this.props.updateRootStateVariable('styleOptions', defaultStyleOptions);
     }
-    public toggleCallout = () => {
-        this.setState({
-            isCalloutVisible: !this.state.isCalloutVisible,
-        })
-        console.log(this.state.isCalloutVisible)
-    }
-
 
 render(){
     let newArr = Array.from(this.state.uniqueErrors)

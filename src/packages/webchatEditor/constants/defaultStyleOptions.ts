@@ -115,9 +115,19 @@ export const defaultStyleOptions = {
     suggestedActionImageHeight: 20,
     suggestedActionLayout: 'carousel', // either 'carousel' or 'stacked'
     suggestedActionTextColor: null,
+    suggestedActionRadius: 0,
+    suggestedActionWidth: 0,
+    suggestedActionDisabledRadius: 0,
+    suggestedActionDisabledWidth: 0,
+    suggestedActionsCarouselFlipperSize: 0,
+
+
+
+
+
   
     // Suggested actions 'stacked' layout
-    suggestedActionsStackedHeight: undefined, // defaults to 'auto'
+    suggestedActionsStackedHeight: 0, // defaults to 'auto' ** changed value from undefined to 0
     suggestedActionsStackedOverflow: null,
   
     // Timestamp
@@ -154,7 +164,7 @@ export const defaultStyleOptions = {
     typingAnimationHeight: 20,
     typingAnimationWidth: 64,
   
-    spinnerAnimationBackgroundImage: null,
+    spinnerAnimationBackgroundImage: null, //change from null to 0
     spinnerAnimationHeight: 16,
     spinnerAnimationWidth: 16,
     spinnerAnimationPadding: 12,
@@ -162,7 +172,7 @@ export const defaultStyleOptions = {
     enableUploadThumbnail: true,
     uploadThumbnailContentType: 'image/jpeg',
     uploadThumbnailHeight: 360,
-    uploadThumbnailQuality: 0.6,
+    uploadThumbnailQuality: 1,
     uploadThumbnailWidth: 720,
   
     // deprecated; will be removed on or after 2021-02-01
@@ -177,7 +187,7 @@ export const defaultStyleOptions = {
     toasterHeight: 32,
     toasterMaxHeight: 32 * 5,
     toasterSingularMaxHeight: 50,
-    toastFontSize: '87.5%',
+    toastFontSize: '87%',
     toastIconWidth: 36,
     toastSeparatorColor: '#E8EAEC',
     toastTextPadding: 6,
