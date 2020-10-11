@@ -21,8 +21,18 @@ const classes = mergeStyleSets({
         float: 'right',
         marginTop: '20px',
     },
-    MessageBar: {
-        width: '300px',
+    messageBar: {
+        maxHeight: '125px',
+    },
+    errors: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        width: '100%',
+        maxHeight: '100px',
+        paddingTop: '10px',
+    },
+    textField : {
     }
 });
 
@@ -79,7 +89,7 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         if (this.props.jsonIsInvalid) {
             return (
                 <MessageBar
-                    className={classes.MessageBar}
+                    className={classes.messageBar}
                     messageBarType={MessageBarType.error}
                     isMultiline={false}
                 >
@@ -200,15 +210,19 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
                 {
                     newArr.length ?
                         <MessageBar
+                            className={classes.messageBar}
                             messageBarType={MessageBarType.error}
                             isMultiline={true}
-                        >The following id's may have incorrect values. Please correct before proceeding
+                        >
+                                The following id's may have incorrect values. Please correct before proceeding
+                            <div className={classes.errors}>
                             {newArr.map(error => (<li>{error}</li>))}
+                            </div>
                         </MessageBar>
                         :
                         <> </>
                 }
-                <TextField onChange={(event: any, newValue?: string) => this.onJsonChange(event, newValue)} label="" multiline rows={40} value={this.state.textValue} />
+                <TextField className={classes.textField} onChange={(event: any, newValue?: string) => this.onJsonChange(event, newValue)} label="" multiline rows={40} value={this.state.textValue} />
                 <PrimaryButton className={classes.resetButtonClassName} onClick={(event: any) => { this.resetToDefault(event) }} text="Reset to default" />
             </div>
         );
