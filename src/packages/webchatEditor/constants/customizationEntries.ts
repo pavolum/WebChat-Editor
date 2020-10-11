@@ -157,7 +157,7 @@ const chatBubbleEntries: CustomizationEntry[] = [
     displayName: 'Nub Offset',        
     category: Category.ChatBubble,
     subCategory: SubCategory.AvatarChatBubble,
-    uiSelectorType: UISelectorType.integerSelector,
+    uiSelectorType: UISelectorType.dropDownSelector,
   },
   { id: 'bubbleFromUserBackground',        
     displayName: 'Background',        
@@ -470,7 +470,7 @@ const suggestedActionsEntries: CustomizationEntry[] = [
     displayName: 'Box Width',
     category: Category.SuggestedActions,
     subCategory: SubCategory.CarouselFlipper,
-    uiSelectorType: UISelectorType.integerSelector,
+    uiSelectorType: UISelectorType.dropDownSelector,
   },
   {
     id: 'suggestedActionsCarouselFlipperSize',
@@ -663,7 +663,7 @@ const connectivityUIEntries: CustomizationEntry[] = [
     displayName: "Background Image (url)",
     category: Category.ConnectivityUI,
     subCategory: SubCategory.SpinnerAnimation,
-    uiSelectorType: UISelectorType.integerSelector,
+    uiSelectorType: UISelectorType.dropDownSelector,
   },
   {
     id: 'spinnerAnimationHeight',

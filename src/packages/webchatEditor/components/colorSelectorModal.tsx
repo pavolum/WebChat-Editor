@@ -79,8 +79,8 @@ const colorCell = [
     <div className={contentStyles.currentColorStyles}  onClick={showModal}>
         <SwatchColorPicker
            columnCount={1}
-           cellHeight={30}
-           cellWidth={30}
+           cellHeight={50}
+           cellWidth={50}
            cellShape={'square'}
            colorCells={colorCell}
            doNotContainWithinFocusZone

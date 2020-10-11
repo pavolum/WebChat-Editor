@@ -49,6 +49,13 @@ const headerContainer = mergeStyles(
     }
 );
 
+
+const pivotHeader = mergeStyles(
+    {
+        marginTop: '15px'
+    }
+);
+
 const editorContainer = mergeStyles(
     {
         padding: '33px',
@@ -95,7 +102,7 @@ export class WebChatEditor extends React.Component<PropsType> {
         let resultingUIComponents = [];
 
         const { activeCategory } = this.props;
-        
+
         for (let category in Category) {
             resultingUIComponents.push(
                 <CategoryLink
@@ -115,15 +122,27 @@ export class WebChatEditor extends React.Component<PropsType> {
                 <div className={`ms-Grid-row ${headerContainer}`}>
                     <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12">Customize Your Webchat UI</div>
                 </div>
+
                 <div className={`ms-Grid-row ${editorContainer}`}>
-                    <div className="ms-Grid-col ms-sm2 ms-md2 ms-lg2">
-                        <Stack tokens={stackTokens}>
-                                {this.RenderCategories()}
-                        </Stack>
+                    <div className="ms-Grid-col ms-sm8 ms-md8 ms-lg8">
+                        <Pivot aria-label="Large Link Size Pivot Example">
+                            <PivotItem className={pivotHeader} headerText="GUI">
+                                <div>
+                                    <div className="ms-Grid-col ms-sm4 ms-md4 ms-lg4">
+                                        <Stack tokens={stackTokens}>
+                                            {this.RenderCategories()}
+                                        </Stack>
+                                    </div>
+                                    <div className={`ms-Grid-col ms-sm8 ms-md8 ms-lg8 ${configurationEntriesContainer}`}>
+                                        <ConfigurationEntryViewer updateRootStateVariable={this.props.updateRootStateVariable} />
+                                    </ div>
+                                </div>
+                            </PivotItem>
+                            <PivotItem headerText="Json Editor">
+                                <WebChatJsonEditor />
+                            </PivotItem>
+                        </Pivot>
                     </div>
-                    <div className={`ms-Grid-col ms-sm6 ms-md6 ms-lg6 ${configurationEntriesContainer}`}>
-                        <ConfigurationEntryViewer updateRootStateVariable={this.props.updateRootStateVariable}/>
-                    </ div>
                     <div className="ms-Grid-col ms-sm4 ms-md4 ms-lg4">
                         <WebChat />
                     </div>
@@ -144,7 +163,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>): DispatchProps => ({
         dispatch(genericSingleAction<any>(actionTypes.UPDATE_STYLE_ELEMENT, { styleElementName: styleElementName, value: value }));
     },
     updateRootStateVariable: (stateVariableName: string, value: any) => {
-        dispatch(genericSingleAction<any>(actionTypes.UPDATE_ROOT_WEBCHAT_STATE_VARIABlE, {propertyName: stateVariableName, value: value}));
+        dispatch(genericSingleAction<any>(actionTypes.UPDATE_ROOT_WEBCHAT_STATE_VARIABlE, { propertyName: stateVariableName, value: value }));
     }
 });
 

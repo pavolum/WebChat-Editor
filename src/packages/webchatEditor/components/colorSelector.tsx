@@ -1,25 +1,25 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
   ColorPicker,
   IColor,
   IColorPickerStyles,
 } from 'office-ui-fabric-react/lib/index';
 import { useBoolean } from '@uifabric/react-hooks';
+import { debounce } from 'underscore';
+
 
 import ColorSelectorModal from './colorSelectorModal';
 
 import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
-import { Link, TextField } from '@fluentui/react';
-import { CalloutModal } from './callOutModal';
+import { TextField } from '@fluentui/react';
 
 const classNames = mergeStyleSets({
-  wrapper: { display: 'flex' },
-  column: { marginRight: '1rem'},
+  column: { marginTop: '16px' },
   parent: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     marginRight: '1rem',
+    height: '100px',
   }
 });
 
@@ -40,45 +40,60 @@ interface ColorSelectorProps {
   onChange: (styleElementName: string, value: any) => void;
 }
 
+const removeHash = (colorCode: string) => {
+  if (colorCode && colorCode.length > 0 && colorCode[0] === '#') {
+    return colorCode.slice(1);
+  }
+  return colorCode;
+}
+
 export const ColorSelector = (props: ColorSelectorProps) => {
-  const { id, value, onChange,} = props;
-  const [defaultColor] = useState(value ? value:'#f5f5f5');
-  const [color, setColor] = useState(value ? value:'#ffffff');
-  const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false);
-  const shiftedValue = value? value.split(''): ['f','5','f','5','f','5',];
-        shiftedValue.shift();
-  const updateColor = useCallback((ev: any, colorObj: IColor) =>{
+  const { id, value, onChange } = props;
+  const [textFieldValue, setTextFieldValue] = useState(removeHash(value));
+  const [isErrorMessageOpen, { setTrue: showErrorMessage, setFalse: hideErrorMessage }] = useBoolean(false);
+
+  const isValid = (newValue?: string): boolean => {
+    if (newValue && (/^#([0-9A-F]{3}){1,2}$/i).test(`#${newValue}`)) {
+      return true;
+    }
+    return false;
+  }
+  
+  const colorFormOnChange = (newValue?: string) => {
+    if (isValid(newValue)) {
+      setTextFieldValue(newValue as string);
+      onChange(id, `#${newValue}`);
+      if (isErrorMessageOpen) {
+        hideErrorMessage();
+      }
+    }
+    else {
+      if (newValue !== null && newValue !== undefined) {
+        setTextFieldValue(newValue);
+        if (!isErrorMessageOpen) {
+          showErrorMessage();
+        }
+      }
+    }
+  }
+
+  const updateColor = (colorObj: IColor) => { 
     onChange(id, colorObj.str);
-    setColor(colorObj.str);
-  }, [id, onChange]); 
-
-  const resetToDefault = useCallback((defaultColor: string) =>{
-    onChange(id, defaultColor);
-    setColor(defaultColor);
-  }, [id, onChange]); 
-
-  const checkHex = (hexValue: string | undefined) => {
-    if(hexValue?.match(/[^abcdefABCDEF0-9]/g) === null ){
-    if(hexValue.length === 6){
-      setColor('#' + hexValue);
+    hideErrorMessage();
+    setTextFieldValue(colorObj.hex);
     }
-    if( hexValue.length > 6){
-      return '#' + hexValue.slice(0,6);
-    }
-    return '#' + hexValue;
-  }
-  else {
-    toggleIsCalloutVisible();
-    return color;
-  }
-  }
+
+    const debounceUpdateColor = debounce(updateColor,150)
+
 
   return (
     <div className={classNames.parent}>
-      <ColorSelectorModal colorValue={color} >
+      <ColorSelectorModal colorValue={value} >
         <ColorPicker
-          color={color}
-          onChange={updateColor}
+          color={value}
+          onChange={(e: any, color: IColor) => {
+          debounceUpdateColor(color);
+          }}
           showPreview
           styles={colorPickerStyles}
           strings={{
@@ -89,12 +104,9 @@ export const ColorSelector = (props: ColorSelectorProps) => {
           alphaSliderHidden />
       </ColorSelectorModal>
 
-          <div className={classNames.column}>
-              <CalloutModal warningMessage={warningMessage} id={id} isCalloutVisible={isCalloutVisible} toggleIsCalloutVisible={toggleIsCalloutVisible}>
-                  <TextField value={shiftedValue.join('')} id={`${id}-call-out`} prefix='#' onChange={(e: any, newValue?: string) => {onChange(id, checkHex(newValue))}}/>
-              </CalloutModal>
-          </div>
-          <Link isButton onClick={()=>resetToDefault(defaultColor)}>Reset to default.</Link>
+      <div className={classNames.column}>
+        <TextField value={textFieldValue} errorMessage={isErrorMessageOpen ? warningMessage : ''} prefix='#' onChange={(e: any, newValue?: string) => { colorFormOnChange(newValue) }} />
+      </div>
     </div>
   );
 };

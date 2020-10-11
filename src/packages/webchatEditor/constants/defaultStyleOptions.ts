@@ -5,6 +5,8 @@ function fontFamily(fonts: any) {
   const DEFAULT_ACCENT = '#0063B1';
   const DEFAULT_SUBTLE = '#767676'; // With contrast 4.5:1 to #ffffff
   const PADDING_REGULAR = 10;
+  const DEFAULT_UNDEFINED_COLOR = '#000000';
+  const DEFAULT_UNDEFINED_RGBA = 'rgba(255,255,255, 50)';
   
 export const defaultStyleOptions = {
     // Color and paddings
@@ -26,10 +28,10 @@ export const defaultStyleOptions = {
     // Avatar
     avatarBorderRadius: '50%',
     avatarSize: 40,
-    botAvatarBackgroundColor: undefined, // defaults to accent color
+    botAvatarBackgroundColor: DEFAULT_UNDEFINED_COLOR, // defaults to accent color
     botAvatarImage: '',
     botAvatarInitials: '',
-    userAvatarBackgroundColor: undefined, // defaults to accent color
+    userAvatarBackgroundColor: DEFAULT_UNDEFINED_COLOR, // defaults to accent color
     userAvatarImage: '',
     userAvatarInitials: '',
   
@@ -75,11 +77,11 @@ export const defaultStyleOptions = {
     hideUploadButton: false,
     microphoneButtonColorOnDictate: '#F33',
     sendBoxBackground: '#ffffff',
-    sendBoxButtonColor: undefined, // defaults to subtle
+    sendBoxButtonColor: DEFAULT_UNDEFINED_COLOR, // defaults to subtle
     sendBoxButtonColorOnDisabled: '#CCC',
     sendBoxButtonColorOnFocus: '#333',
     sendBoxButtonColorOnHover: '#333',
-    sendBoxDisabledTextColor: undefined, // defaults to subtle
+    sendBoxDisabledTextColor: DEFAULT_UNDEFINED_COLOR, // defaults to subtle
     sendBoxHeight: 40,
     sendBoxMaxHeight: 200,
     sendBoxTextColor: '#000000',
@@ -88,39 +90,51 @@ export const defaultStyleOptions = {
     sendBoxBorderLeft: '',
     sendBoxBorderRight: '',
     sendBoxBorderTop: 'solid 1px #E6E6E6',
-    sendBoxPlaceholderColor: undefined, // defaults to subtle
+    sendBoxPlaceholderColor: DEFAULT_UNDEFINED_COLOR, // defaults to subtle
     sendBoxTextWrap: false,
   
     // Visually show spoken text
     showSpokenText: false,
   
     // Suggested actions
+    suggestedActionDisabledColor: '#ffffff',
+    suggestedActionColor: '#ffffff',
     suggestedActionBackground: '#ffffff',
     suggestedActionBorder: undefined, // split into 3, null
-    suggestedActionBorderColor: undefined, // defaults to accent
+    suggestedActionBorderColor: '#f5f5f5', // defaults to accent
     suggestedActionBorderRadius: 0,
     suggestedActionBorderStyle: 'solid',
     suggestedActionBorderWidth: 2,
-    suggestedActionDisabledBackground: undefined, // defaults to suggestedActionBackground
+    suggestedActionDisabledBackground: DEFAULT_UNDEFINED_COLOR, // defaults to suggestedActionBackground
     suggestedActionDisabledBorder: null,
     suggestedActionDisabledBorderColor: '#E6E6E6',
     suggestedActionDisabledBorderStyle: 'solid',
     suggestedActionDisabledBorderWidth: 2,
-    suggestedActionDisabledTextColor: undefined, // defaults to subtle
+    suggestedActionDisabledTextColor: DEFAULT_UNDEFINED_COLOR, // defaults to subtle
     suggestedActionHeight: 40,
     suggestedActionImageHeight: 20,
     suggestedActionLayout: 'carousel', // either 'carousel' or 'stacked'
     suggestedActionTextColor: null,
+    suggestedActionRadius: 0,
+    suggestedActionWidth: 0,
+    suggestedActionDisabledRadius: 0,
+    suggestedActionDisabledWidth: 0,
+    suggestedActionsCarouselFlipperSize: 0,
+
+
+
+
+
   
     // Suggested actions 'stacked' layout
-    suggestedActionsStackedHeight: undefined, // defaults to 'auto'
+    suggestedActionsStackedHeight: 0, // defaults to 'auto' ** changed value from undefined to 0
     suggestedActionsStackedOverflow: null,
   
     // Timestamp
     groupTimestamp: true,
     sendTimeout: 20000,
     sendTimeoutForAttachments: 120000,
-    timestampColor: undefined, // defaults to subtle
+    timestampColor: DEFAULT_UNDEFINED_COLOR, // defaults to subtle
     timestampFormat: 'relative', // 'absolute'
   
     // Transcript overlay buttons (e.g. carousel and suggested action flippers, scroll to bottom, etc.)
@@ -129,8 +143,8 @@ export const defaultStyleOptions = {
     transcriptOverlayButtonBackgroundOnFocus: 'rgba(0, 0, 0, .8)',
     transcriptOverlayButtonBackgroundOnHover: 'rgba(0, 0, 0, .8)',
     transcriptOverlayButtonColor: '#ffffff',
-    transcriptOverlayButtonColorOnFocus: undefined, // defaults to transcriptOverlayButtonColor
-    transcriptOverlayButtonColorOnHover: undefined, // defaults to transcriptOverlayButtonColor
+    transcriptOverlayButtonColorOnFocus: DEFAULT_UNDEFINED_RGBA, // defaults to transcriptOverlayButtonColor
+    transcriptOverlayButtonColorOnHover: DEFAULT_UNDEFINED_RGBA, // defaults to transcriptOverlayButtonColor
   
     // Video
     videoHeight: 270, // based on bubbleMaxWidth, 480 / 16 * 9 = 270
@@ -150,7 +164,7 @@ export const defaultStyleOptions = {
     typingAnimationHeight: 20,
     typingAnimationWidth: 64,
   
-    spinnerAnimationBackgroundImage: null,
+    spinnerAnimationBackgroundImage: null, //change from null to 0
     spinnerAnimationHeight: 16,
     spinnerAnimationWidth: 16,
     spinnerAnimationPadding: 12,
@@ -158,7 +172,7 @@ export const defaultStyleOptions = {
     enableUploadThumbnail: true,
     uploadThumbnailContentType: 'image/jpeg',
     uploadThumbnailHeight: 360,
-    uploadThumbnailQuality: 0.6,
+    uploadThumbnailQuality: 1,
     uploadThumbnailWidth: 720,
   
     // deprecated; will be removed on or after 2021-02-01
@@ -173,7 +187,7 @@ export const defaultStyleOptions = {
     toasterHeight: 32,
     toasterMaxHeight: 32 * 5,
     toasterSingularMaxHeight: 50,
-    toastFontSize: '87.5%',
+    toastFontSize: '87%',
     toastIconWidth: 36,
     toastSeparatorColor: '#E8EAEC',
     toastTextPadding: 6,

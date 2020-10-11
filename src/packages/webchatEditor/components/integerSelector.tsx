@@ -1,6 +1,8 @@
 import React, { Fragment } from "react";
 import { SpinButton } from 'office-ui-fabric-react/lib/SpinButton';
 import { mergeStyles } from "@fluentui/react";
+import { debounce } from 'underscore';
+
 
 interface IntegerSelectorProps {
     id: string;
@@ -10,20 +12,22 @@ interface IntegerSelectorProps {
 
 const Ui_selector = mergeStyles(
     {
-        width: '1em',
+        width: '2em',
     }
 );
 
 export const IntegerSelector = (props: IntegerSelectorProps) => {
     const { id, value, onChange } = props;
 
+    const debounceOnChange = debounce(onChange,500);
+
     const spinButtonIncrement = (val: string) => {
-        onChange(id, parseInt(val) + 1);
+        debounceOnChange(id, parseInt(val) + 1);
         return String(+val + 1);
     };
 
     const spinButtonDecrement = (val: string) => {
-        onChange(id, parseInt(val) - 1);
+        debounceOnChange(id, parseInt(val) - 1);
         return String(+val - 1);
     };
 
