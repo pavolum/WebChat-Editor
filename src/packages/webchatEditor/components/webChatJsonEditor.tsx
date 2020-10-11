@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { CustomizationEntry,IAppState, WebChatStyleOption } from "../../Redux/reduxState";
+import { CustomizationEntry, IAppState, WebChatStyleOption } from "../../Redux/reduxState";
 import { connect } from "react-redux";
 import { actionTypes, genericSingleAction } from "../../Redux/actions";
 import { Dispatch, AnyAction } from 'redux';
@@ -13,7 +13,7 @@ import {
 
 } from 'office-ui-fabric-react';
 import { DefaultButton, PrimaryButton, Stack, IStackTokens } from 'office-ui-fabric-react';
-import { mergeStyles, mergeStyleSets } from '@uifabric/merge-styles';
+import { mergeStyleSets } from '@uifabric/merge-styles';
 import { ColorSelector } from "./colorSelector";
 import { RgbaSelector } from "./rgbaSelector";
 import { customizationEntries } from "../constants/customizationEntries";
@@ -21,9 +21,14 @@ import { filter, object, unique } from "underscore";
 import { CalloutModal } from "./callOutModal";
 
 ////////////////// Styling //////////////////
-const resetButtonClassName = mergeStyles({
-    float: 'right',
-    marginTop: '20px'
+const classes = mergeStyleSets({
+    resetButtonClassName: {
+        float: 'right',
+        marginTop: '20px',
+    },
+    MessageBar: {
+        width: '300px',
+    }
 });
 
 ////////////////// WebChatJsonEditor //////////////////
@@ -53,9 +58,10 @@ type PropsType = StateProps & DispatchProps & Props;
 export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
     constructor(props: PropsType) {
         super(props);
-        this.state = ({textValue: JSON.stringify(this.props.currentStyleOptions, null, 4),
-        uniqueErrors: new Set(),
-    })
+        this.state = ({
+            textValue: JSON.stringify(this.props.currentStyleOptions, null, 4),
+            uniqueErrors: new Set(),
+        })
     }
 
     removeError = (index: number) => {
@@ -63,17 +69,17 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         this.setState({
             uniqueErrors: this.state.uniqueErrors
         })
-    return true;
+        return true;
     }
 
     addError = (index: number) => {
-        if(!this.state.uniqueErrors.has(customizationEntries[index].id)){
+        if (!this.state.uniqueErrors.has(customizationEntries[index].id)) {
             var addNewError = this.state.uniqueErrors.add(customizationEntries[index].id)
-        this.setState({
-            uniqueErrors: addNewError,
-        })      
-    }
-    return false;
+            this.setState({
+                uniqueErrors: addNewError,
+            })
+        }
+        return false;
     }
 
     checkColor = (id: string, index: number) => {
@@ -81,31 +87,31 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
             return this.removeError(index);
         } else {
             return this.addError(index)
-    }
+        }
     }
 
     checkRGBA = (id: string, index: number) => {
-        if((/rgba?\((\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*)((?:,\s*[0-9.]*\s*)?)\)/g).test(id)){
+        if ((/rgba?\((\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*)((?:,\s*[0-9.]*\s*)?)\)/g).test(id)) {
             return this.removeError(index);
         } else {
             return this.addError(index)
-    }
+        }
     }
 
     checkInt = (id: number, index: number) => {
-        if(typeof id === 'number'){
+        if (typeof id === 'number') {
             return this.removeError(index);
         } else {
             return this.addError(index)
-    }
+        }
     }
 
     checkBoolean = (id: string, index: number) => {
-        if(typeof id === 'boolean'){
+        if (typeof id === 'boolean') {
             return this.removeError(index);
         } else {
             return this.addError(index)
-    }
+        }
     }
 
     checkDropDown = (id: string, index: number) => {
@@ -113,11 +119,11 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
     }
 
     checkPercentage = (id: string, index: number) => {
-        if((/^[0]*?(?<Percentage>[1-9][0-9]?|100)%?$/i).test(id)){
+        if ((/^[0]*?(?<Percentage>[1-9][0-9]?|100)%?$/i).test(id)) {
             return this.removeError(index);
         } else {
             return this.addError(index)
-    }
+        }
     }
 
     checkDefault = (id: string, index: number) => {
@@ -125,36 +131,36 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
 
     }
 
-    private validateJSON = (newJson: any, ) => {
-       this.props.customizationEntries.map((entry, index) => {
-           switch(entry.uiSelectorType){
-        case 'colorSelector':
-            return  this.checkColor(newJson[entry.id], index);
-        case 'booleanSelector':
-            return this.checkBoolean(newJson[entry.id], index);
-        case 'rgbaSelector':
-            return  this.checkRGBA(newJson[entry.id], index);
-            case 'integerSelector':
-                return  this.checkInt(newJson[entry.id], index);
-        case 'percentageSelector':
-            return this.checkPercentage(newJson[entry.id], index);
-            // return true;
-        case 'defaultSelector':
-            // return this.checkDefault(newJson[entry.id], index);
-            return true;
-        case 'dropDownSelector':
-            return this.checkDropDown(newJson[entry.id], index);
-            default:
-            return true;
-           }
-           
+    private validateJSON = (newJson: any,) => {
+        this.props.customizationEntries.map((entry, index) => {
+            switch (entry.uiSelectorType) {
+                case 'colorSelector':
+                    return this.checkColor(newJson[entry.id], index);
+                case 'booleanSelector':
+                    return this.checkBoolean(newJson[entry.id], index);
+                case 'rgbaSelector':
+                    return this.checkRGBA(newJson[entry.id], index);
+                case 'integerSelector':
+                    return this.checkInt(newJson[entry.id], index);
+                case 'percentageSelector':
+                    return this.checkPercentage(newJson[entry.id], index);
+                // return true;
+                case 'defaultSelector':
+                    // return this.checkDefault(newJson[entry.id], index);
+                    return true;
+                case 'dropDownSelector':
+                    return this.checkDropDown(newJson[entry.id], index);
+                default:
+                    return true;
+            }
+
         });
 
     }
 
     private onJsonChange = (event: any, newJson?: string) => {
         if (newJson) {
-            this.setState({textValue: newJson});
+            this.setState({ textValue: newJson });
             var newStyleOptions: WebChatStyleOption
             try {
                 newStyleOptions = JSON.parse(newJson);
@@ -172,6 +178,7 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         if (this.props.jsonIsInvalid) {
             return (
                 <MessageBar
+                    className={classes.MessageBar}
                     messageBarType={MessageBarType.error}
                     isMultiline={false}
                 >
@@ -180,25 +187,29 @@ export class WebChatJsonEditor extends React.Component<PropsType, LocalState> {
         }
     }
 
-    private resetToDefault = (event: any) =>{
-        this.setState({textValue: JSON.stringify(defaultStyleOptions, null, 4)});
+    private resetToDefault = (event: any) => {
+        this.setState({ textValue: JSON.stringify(defaultStyleOptions, null, 4) });
         this.props.updateRootStateVariable('styleOptions', defaultStyleOptions);
     }
 
-render(){
-    let newArr = Array.from(this.state.uniqueErrors)
+    render() {
+        let newArr = Array.from(this.state.uniqueErrors)
         return (
             <div>
                 {this.renderErrorBanner()}
-                <MessageBar
-                  messageBarType={MessageBarType.error}
-                  isMultiline={true}
-                  dismissButtonAriaLabel="Close"
-                >
-                {newArr.map(error=>(<li>{error}</li>))}
-                </MessageBar>
-                <TextField  onChange={(event: any, newValue?: string) => this.onJsonChange(event, newValue)} label="" multiline rows={40} value={this.state.textValue} />
-                <PrimaryButton  className={resetButtonClassName} onClick={(event: any) => {this.resetToDefault(event)}} text="Reset to default" /> n
+                {
+                    newArr.length ?
+                        <MessageBar
+                            messageBarType={MessageBarType.error}
+                            isMultiline={true}
+                        >The following id's may have incorrect values. Please correct before proceeding
+                            {newArr.map(error => (<li>{error}</li>))}
+                        </MessageBar>
+                        :
+                        <> </>
+                }
+                <TextField onChange={(event: any, newValue?: string) => this.onJsonChange(event, newValue)} label="" multiline rows={40} value={this.state.textValue} />
+                <PrimaryButton className={classes.resetButtonClassName} onClick={(event: any) => { this.resetToDefault(event) }} text="Reset to default" />
             </div>
         );
     }
